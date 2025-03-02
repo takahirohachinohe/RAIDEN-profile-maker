@@ -39,7 +39,7 @@ main {
   margin-bottom: 0.5em;
 }
 
-/* ラベル・入力欄 */
+/* フォーム要素 */
 label {
   display: block;
   font-weight: bold;
@@ -77,7 +77,7 @@ button:hover {
 
 /* ステータス表示 */
 #status {
-  margin-top:10px;
+  margin-top: 10px;
   color: #ff8080;
 }
 
@@ -87,8 +87,8 @@ button:hover {
   margin: 20px auto;
   border: 1px solid #FFD700;
   border-radius: 6px;
-  padding:10px;
-  background-color:#222;
+  padding: 10px;
+  background-color: #222;
 }
 
 /* 画像 */
@@ -97,5 +97,5 @@ img.raiden-photo {
   border: 2px solid #FFD700;
   border-radius: 8px;
   margin-bottom: 10px;
-  display:block;
+  display: block;
 }
