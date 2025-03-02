@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>TEAM RAIDEN 推しプロフ - プレビュー</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js -->
+  <!-- Chart.js (性格チャート) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- html2canvas (画像化用) -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas"></script>
@@ -15,7 +15,7 @@
   </header>
 
   <main>
-    <!-- プレビュー全体を囲む要素: #previewContainer -->
+    <!-- ▼ プレビュー領域: #previewContainer -->
     <div id="previewContainer" class="preview-container">
       <h2>推し選手＆基本情報</h2>
       <div id="photoArea"></div>
@@ -25,7 +25,7 @@
       <p id="highlightDisplay"></p>
       <p id="nicknameDisplay"></p>
 
-      <h2>性格チャート (円グラフ)</h2>
+      <h2>性格チャート(円グラフ)</h2>
       <div class="chart-container">
         <canvas id="myChart"></canvas>
       </div>
@@ -53,43 +53,41 @@
       <p id="messageDisplay"></p>
     </div>
 
-    <!-- ボタン群 (下部) -->
+    <!-- ▼ ボタン群 ▼ -->
     <div style="text-align:center; margin-top:20px;">
-      <!-- A. 修正する -->
+      <!-- 修正する -->
       <button id="editBtn" style="background:#005f9e; color:#fff; margin-right:10px;">
         修正する
       </button>
-
-      <!-- B. Xに投稿 -->
-      <button id="shareXBtn" style="background:#000; color:#fff; margin-right:10px;">
-        Xに投稿
-      </button>
-
-      <!-- C. 画像のみ (ダウンロード) -->
-      <button id="downloadImgBtn" style="background:#555; color:#fff;">
+      <!-- 画像のみ -->
+      <button id="downloadImgBtn" style="background:#555; color:#fff; margin-right:10px;">
         画像のみ
+      </button>
+      <!-- Xでシェア -->
+      <button id="shareXBtn" style="background:#000; color:#fff;">
+        Xでシェア
       </button>
     </div>
   </main>
 
   <script>
-    window.addEventListener('DOMContentLoaded',()=>{
+    window.addEventListener('DOMContentLoaded', async ()=>{
       const dataStr= localStorage.getItem('raidenProfileData');
       if(!dataStr){
         document.body.insertAdjacentHTML('beforeend','<p>データがありません</p>');
         return;
       }
-      const data = JSON.parse(dataStr);
+      const data= JSON.parse(dataStr);
 
-      // 1) 画像
-      const photoDiv = document.getElementById('photoArea');
+      // 1) 画像表示
+      const photoDiv= document.getElementById('photoArea');
       if(data.photoDataURL){
         const img= document.createElement('img');
         img.src= data.photoDataURL;
-        img.className="raiden-photo";
+        img.className= "raiden-photo";
         photoDiv.appendChild(img);
       } else {
-        photoDiv.textContent="画像なし or 破棄";
+        photoDiv.textContent= "画像なし or 破棄";
       }
 
       // 2) テキスト項目
@@ -106,14 +104,17 @@
 
       // 性格チャート
       const cool=data.cool||0, cute=data.cute||0, kind=data.kind||0, funny=data.funny||0, strong=data.strong||0;
-      const sum = cool+ cute+ kind+ funny+ strong;
+      const sum = cool + cute + kind + funny + strong;
       let rCool=0,rCute=0,rKind=0,rFunny=0,rStrong=0;
       if(sum>0){
-        rCool= cool/sum; rCute= cute/sum; rKind= kind/sum;
-        rFunny= funny/sum; rStrong= strong/sum;
+        rCool= cool/sum;
+        rCute= cute/sum;
+        rKind= kind/sum;
+        rFunny= funny/sum;
+        rStrong= strong/sum;
       }
       const ctx= document.getElementById('myChart').getContext('2d');
-      new Chart(ctx, {
+      new Chart(ctx,{
         type:'pie',
         data:{
           labels:['クール','かわいい','優しい','面白い','強い'],
@@ -138,19 +139,19 @@
       document.getElementById('memory1Display').textContent
         = "一番の思い出: " + (data.memory1||'');
       document.getElementById('memory2Display').textContent
-        = "輝いたのは: " + (data.memory2||'');
+        = "輝いた時: " + (data.memory2||'');
 
       // ifトーク
       document.getElementById('teacherDisplay').textContent
         = "学校の先生にするなら: " + (data.teacher||'');
       document.getElementById('islandDisplay').textContent
-        = "一緒に無人島行くなら: " + (data.island||'');
+        = "無人島に行くなら: " + (data.island||'');
       document.getElementById('bossDisplay').textContent
         = "上司にするなら: " + (data.boss||'');
       document.getElementById('juniorDisplay').textContent
         = "後輩にするなら: " + (data.junior||'');
 
-      // 家族
+      // 家族に例える
       document.getElementById('fatherDisplay').textContent
         = "父: " + (data.father||'');
       document.getElementById('motherDisplay').textContent
@@ -170,32 +171,63 @@
       document.getElementById('messageDisplay').textContent
         = data.message||'';
 
-      // ========= ボタン機能 =========
+      // ========= ボタン処理 =========
 
-      // (A) 修正する -> index.html に戻る
+      // (A) 修正する -> index.html
       document.getElementById('editBtn').addEventListener('click',()=>{
         window.location.href = "index.html";
       });
 
-      // (B) Xに投稿 -> Twitter intent
-      document.getElementById('shareXBtn').addEventListener('click',()=>{
-        const text = "TEAM RAIDEN 推しプロフを作成！";
-        // ここに共有したいURLなど
-        const shareUrl = "";
-        const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
-        window.open(tweetUrl,"_blank");
+      // (B) 画像のみ -> html2canvas
+      document.getElementById('downloadImgBtn').addEventListener('click', async ()=>{
+        const previewElem= document.getElementById('previewContainer');
+        const canvas= await html2canvas(previewElem);
+        const a= document.createElement('a');
+        a.download = "raiden-profile.png";
+        a.href= canvas.toDataURL("image/png");
+        a.click();
       });
 
-      // (C) 画像のみ -> html2canvas
-      document.getElementById('downloadImgBtn').addEventListener('click',()=>{
+      // (C) Xでシェア (画像を直接 or テキストだけ)
+      document.getElementById('shareXBtn').addEventListener('click', async ()=>{
+        // 1) プレビュー領域を画像化
         const previewElem = document.getElementById('previewContainer');
-        html2canvas(previewElem).then(canvas=>{
-          const a = document.createElement('a');
-          a.download = "raiden-profile.png";
-          a.href = canvas.toDataURL("image/png");
-          a.click();
-        });
+        const canvas = await html2canvas(previewElem);
+        const dataUrl = canvas.toDataURL("image/png");
+
+        // 2) Web Share API対応チェック
+        if(navigator.canShare && navigator.canShare({ files: [] })){
+          // DataURL -> Blob
+          const blob = dataURLtoBlob(dataUrl);
+          const file = new File([blob], "raiden-profile.png", {type:"image/png"});
+          try {
+            await navigator.share({
+              text: "TEAM RAIDEN 推しプロフを作成！",
+              files: [file]
+            });
+          } catch(e){
+            console.warn("シェアがキャンセル or 失敗", e);
+          }
+        } else {
+          // Web Share API未対応 → intent/tweet(テキストのみ)
+          const text = "TEAM RAIDEN 推しプロフ作成！(画像は手動でアップしてね)";
+          const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+          window.open(tweetUrl,"_blank");
+        }
       });
+
+      // DataURL->Blob 変換
+      function dataURLtoBlob(dataurl){
+        const arr = dataurl.split(','), 
+              mime = arr[0].match(/:(.*?);/)[1],
+              bstr = atob(arr[1]),
+              n = bstr.length,
+              u8arr = new Uint8Array(n);
+        for(let i=0;i<n;i++){
+          u8arr[i] = bstr.charCodeAt(i);
+        }
+        return new Blob([u8arr], {type:mime});
+      }
     });
   </script>
 </body>
