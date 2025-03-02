@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>TEAM RAIDEN 推しプロフ - 入力</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>TEAM RAIDEN 推しプロフィール 入力ページ</h1>
+  </header>
+
+  <main>
+    <div class="profile-container">
+      <h2>推し選手＆基本情報</h2>
+      
+      <label for="playerSelect">推し選手を選択（必須）</label>
+      <select id="playerSelect">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+        <option>全員を推す</option>
+      </select>
+
+      <label for="photo">推し選手の好きな写真をアップロード</label>
+      <input type="file" id="photo" accept="image/*" />
+
+      <label for="nickname">推しの呼び方 (10文字まで)</label>
+      <input type="text" id="nickname" maxlength="10" />
+
+      <label for="favoriteThing">好きなところ (13文字まで)</label>
+      <input type="text" id="favoriteThing" maxlength="13" />
+
+      <label for="fanReason">好きになったきっかけ (18文字まで)</label>
+      <input type="text" id="fanReason" maxlength="18" />
+
+      <label for="highlight">推しのここを知ってほしい！ (12文字まで)</label>
+      <input type="text" id="highlight" maxlength="12" />
+
+      <label for="oneword">推しを一言で表すなら (12文字まで)</label>
+      <input type="text" id="oneword" maxlength="12" />
+
+      <label for="feature">推しの特徴 (12文字まで)</label>
+      <input type="text" id="feature" maxlength="12" />
+
+      <label for="outing">推しと出かけるなら (12文字まで)</label>
+      <input type="text" id="outing" maxlength="12" />
+
+      <label for="personality">推しの性格 (12文字まで)</label>
+      <input type="text" id="personality" maxlength="12" />
+
+      <h2>推しの性格チャート</h2>
+      <p>クール: <input type="number" id="cool" value="0" />%</p>
+      <p>かわいい: <input type="number" id="cute" value="0" />%</p>
+      <p>優しい: <input type="number" id="kind" value="0" />%</p>
+      <p>面白い: <input type="number" id="funny" value="0" />%</p>
+      <p>強い: <input type="number" id="strong" value="0" />%</p>
+
+      <h2>推しのベストメモリーズ</h2>
+      <label for="memory1">推しとの一番の思い出はこれだ！ (72文字まで)</label>
+      <textarea id="memory1" rows="3" maxlength="72"></textarea>
+
+      <label for="memory2">推しが一番輝いて見えたのはこの時！ (72文字まで)</label>
+      <textarea id="memory2" rows="3" maxlength="72"></textarea>
+
+      <h2>ifトーク</h2>
+      <label for="teacher">学校の先生にするなら</label>
+      <select id="teacher">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+
+      <label for="island">一緒に無人島行くなら</label>
+      <select id="island">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+
+      <label for="boss">上司にするなら</label>
+      <select id="boss">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+
+      <label for="junior">後輩にするなら</label>
+      <select id="junior">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+
+      <h2>チームを家族に例えるなら</h2>
+      <label for="father">父</label>
+      <select id="father">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+      <label for="mother">母</label>
+      <select id="mother">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+      <label for="brother">兄</label>
+      <select id="brother">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+      <label for="sister">姉</label>
+      <select id="sister">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+      <label for="youngerBrother">弟</label>
+      <select id="youngerBrother">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+      <label for="youngerSister">妹</label>
+      <select id="youngerSister">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+      <label for="pet">ペット</label>
+      <select id="pet">
+        <option value="" disabled selected>選択してください</option>
+        <option>萩原聖人</option>
+        <option>瀬戸熊直樹</option>
+        <option>黒沢咲</option>
+        <option>本田朋広</option>
+      </select>
+
+      <h2>推しへのメッセージ</h2>
+      <label for="message">推し選手への愛、好きなところなど</label>
+      <textarea id="message" rows="4" maxlength="148"></textarea>
+
+      <button id="goPreviewBtn">2ページ目(プレビュー)へ</button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
