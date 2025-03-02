@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>TEAM RAIDEN 推しプロフ - 2ページ目</title>
+  <title>TEAM RAIDEN 推しプロフ - プレビュー</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -10,34 +10,34 @@
   <header>
     <h1>TEAM RAIDEN 推しプロフ - プレビュー</h1>
   </header>
-
   <main>
     <div class="preview-container">
       <h2>推し選手＆基本情報</h2>
       <div id="photoArea"></div>
       <p id="playerSelectDisplay"></p>
-
-      <p id="favoriteThingDisplay"></p>   <!-- 推しの好きなところ -->
-      <p id="fanReasonDisplay"></p>       <!-- 推しの好きになったきっかけ -->
-      <p id="highlightDisplay"></p>       <!-- 推しのここを知ってほしい -->
-
+      <p id="favoriteThingDisplay"></p>
+      <p id="fanReasonDisplay"></p>
+      <p id="highlightDisplay"></p>
       <p id="nicknameDisplay"></p>
 
-      <h2>性格チャート (円グラフ)</h2>
+      <h2>性格チャート(円グラフ)</h2>
       <div class="chart-container">
         <canvas id="myChart"></canvas>
       </div>
 
+      <!-- ベストメモリーズ -->
       <h2>推しのベストメモリーズ</h2>
       <p id="memory1Display"></p>
       <p id="memory2Display"></p>
 
+      <!-- ifトーク -->
       <h2>ifトーク</h2>
       <p id="teacherDisplay"></p>
       <p id="islandDisplay"></p>
       <p id="bossDisplay"></p>
       <p id="juniorDisplay"></p>
 
+      <!-- 家族に例えるなら -->
       <h2>チームを家族に例えるなら</h2>
       <p id="fatherDisplay"></p>
       <p id="motherDisplay"></p>
@@ -47,53 +47,52 @@
       <p id="youngerSisterDisplay"></p>
       <p id="petDisplay"></p>
 
+      <!-- メッセージ -->
       <h2>推しへのメッセージ</h2>
       <p id="messageDisplay"></p>
     </div>
   </main>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const stored= localStorage.getItem('raidenProfileData');
-      if(!stored){
+    window.addEventListener('DOMContentLoaded',()=>{
+      const dataStr= localStorage.getItem('raidenProfileData');
+      if(!dataStr){
         document.body.insertAdjacentHTML('beforeend','<p>データがありません</p>');
         return;
       }
-      const data= JSON.parse(stored);
+      const data= JSON.parse(dataStr);
 
-      // 1) 画像表示
-      const photoArea= document.getElementById('photoArea');
+      // 写真
+      const photoDiv= document.getElementById('photoArea');
       if(data.photoDataURL){
         const img= document.createElement('img');
         img.src= data.photoDataURL;
-        img.alt= "推し選手の写真";
         img.className= "raiden-photo";
-        photoArea.appendChild(img);
+        photoDiv.appendChild(img);
       } else {
-        photoArea.textContent= "画像なし or 破棄されました";
+        photoDiv.textContent= "画像なし or 破棄";
       }
 
-      // 2) テキスト項目
+      // テキスト項目
       document.getElementById('playerSelectDisplay').textContent  = "推し選手: " + (data.playerSelect||'');
-      document.getElementById('favoriteThingDisplay').textContent = "推しの好きなところ: " + (data.favoriteThing||'');
+      document.getElementById('favoriteThingDisplay').textContent= "推しの好きなところ: " + (data.favoriteThing||'');
       document.getElementById('fanReasonDisplay').textContent     = "推しの好きになったきっかけ: " + (data.fanReason||'');
       document.getElementById('highlightDisplay').textContent     = "推しのここを知ってほしい: " + (data.highlight||'');
       document.getElementById('nicknameDisplay').textContent      = "呼び方: " + (data.nickname||'');
 
-      // 性格チャート
-      const cool = data.cool||0, cute=data.cute||0, kind=data.kind||0, funny=data.funny||0, strong=data.strong||0;
-      const sum= cool + cute + kind + funny + strong;
-      let rCool=0, rCute=0, rKind=0, rFunny=0, rStrong=0;
+      // 性格チャート円グラフ
+      const cool=data.cool||0, cute=data.cute||0, kind=data.kind||0, funny=data.funny||0, strong=data.strong||0;
+      const sum= cool+ cute+ kind+ funny+ strong;
+      let rCool=0,rCute=0,rKind=0,rFunny=0,rStrong=0;
       if(sum>0){
-        rCool   = cool/sum;
-        rCute   = cute/sum;
-        rKind   = kind/sum;
-        rFunny  = funny/sum;
-        rStrong = strong/sum;
+        rCool= cool/sum;
+        rCute= cute/sum;
+        rKind= kind/sum;
+        rFunny= funny/sum;
+        rStrong= strong/sum;
       }
-
       const ctx= document.getElementById('myChart').getContext('2d');
-      new Chart(ctx, {
+      new Chart(ctx,{
         type:'pie',
         data:{
           labels:['クール','かわいい','優しい','面白い','強い'],
@@ -115,8 +114,8 @@
       });
 
       // ベストメモリーズ
-      document.getElementById('memory1Display').textContent= "推しとの一番の思い出はこれだ！: " + (data.memory1||'');
-      document.getElementById('memory2Display').textContent= "推しが一番輝いて見えたのはこの時！: " + (data.memory2||'');
+      document.getElementById('memory1Display').textContent= "推しとの一番の思い出: " + (data.memory1||'');
+      document.getElementById('memory2Display').textContent= "推しが一番輝いたのはこの時: " + (data.memory2||'');
 
       // ifトーク
       document.getElementById('teacherDisplay').textContent= "学校の先生にするなら: " + (data.teacher||'');
@@ -124,7 +123,7 @@
       document.getElementById('bossDisplay').textContent   = "上司にするなら: " + (data.boss||'');
       document.getElementById('juniorDisplay').textContent = "後輩にするなら: " + (data.junior||'');
 
-      // 家族に例えるなら
+      // 家族
       document.getElementById('fatherDisplay').textContent = "父: " + (data.father||'');
       document.getElementById('motherDisplay').textContent = "母: " + (data.mother||'');
       document.getElementById('brotherDisplay').textContent= "兄: " + (data.brother||'');
