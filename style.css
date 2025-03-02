@@ -1,7 +1,7 @@
-/* 全体 */
+/* ----- 黒×金のTEAM RAIDEN風 ----- */
 body {
-  background-color: #000; /* 背景は黒 */
-  color: #FFD700;         /* 文字は金色 */
+  background-color: #000;
+  color: #FFD700;
   font-family: "Segoe UI", Verdana, sans-serif;
   margin: 0;
   padding: 20px;
@@ -23,16 +23,15 @@ main {
   margin: 0 auto;
 }
 
-/* フォームやプレビューの枠 */
+/* コンテナ */
 .profile-container, .preview-container {
-  border: 2px solid #FFFF00; /* 枠線は黄色 */
+  border: 2px solid #FFFF00;
   border-radius: 8px;
-  background-color: #111;     /* 黒に近い背景 */
+  background-color: #111;
   padding: 20px;
   margin-bottom: 20px;
 }
 
-/* 見出し */
 .profile-container h2, .preview-container h2 {
   color: #FFFF00;
   border-bottom: 1px solid #FFD700;
@@ -41,7 +40,7 @@ main {
   margin-bottom: 0.5em;
 }
 
-/* ラベルや入力欄 */
+/* フォーム要素 */
 label {
   display: block;
   font-weight: bold;
@@ -77,7 +76,13 @@ button:hover {
   background-color: #FFFF00;
 }
 
-/* 円グラフ用 */
+/* 圧縮やポップアップ表示用ステータス */
+#status {
+  margin-top: 10px;
+  color: #ff8080;
+}
+
+/* 円グラフ */
 .chart-container {
   max-width: 400px;
   margin: 20px auto;
@@ -87,7 +92,7 @@ button:hover {
   background-color: #222;
 }
 
-/* アップロードした写真の表示用 */
+/* 画像 */
 img.raiden-photo {
   max-width: 200px;
   border: 2px solid #FFD700;

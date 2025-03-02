@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>TEAM RAIDEN 推しプロフ - プレビュー</title>
+  <meta charset="UTF-8" />
+  <title>TEAM RAIDEN 推しプロフ - 2ページ目</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
-    <h1>TEAM RAIDEN 推しプロフ - 2ページ目</h1>
+    <h1>TEAM RAIDEN 推しプロフ - プレビュー</h1>
   </header>
 
   <main>
     <div class="preview-container">
       <h2>推し選手＆基本情報</h2>
-      <!-- 写真表示 -->
-      <div id="photoDisplay"></div>
-
+      <div id="photoArea"></div>
       <p id="playerSelectDisplay"></p>
+
+      <p id="favoriteThingDisplay"></p>   <!-- 推しの好きなところ -->
+      <p id="fanReasonDisplay"></p>       <!-- 推しの好きになったきっかけ -->
+      <p id="highlightDisplay"></p>       <!-- 推しのここを知ってほしい -->
+
       <p id="nicknameDisplay"></p>
-      <p id="favoriteDisplay"></p>
-      <p id="fanReasonDisplay"></p>
-      <p id="highlightDisplay"></p>
-      <p id="onewordDisplay"></p>
-      <p id="featureDisplay"></p>
-      <p id="outingDisplay"></p>
-      <p id="personalityDisplay"></p>
 
       <h2>性格チャート (円グラフ)</h2>
       <div class="chart-container">
@@ -59,45 +54,37 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // 1) LocalStorageから取得
-      const stored = localStorage.getItem('raidenProfileData');
-      if (!stored) {
+      const stored= localStorage.getItem('raidenProfileData');
+      if(!stored){
         document.body.insertAdjacentHTML('beforeend','<p>データがありません</p>');
         return;
       }
-      const data = JSON.parse(stored);
+      const data= JSON.parse(stored);
 
-      // 2) 写真があれば表示
-      if (data.photoDataURL) {
-        const photoDiv = document.getElementById('photoDisplay');
-        // img要素を作成して表示
-        const imgEl = document.createElement('img');
-        imgEl.src = data.photoDataURL;
-        imgEl.alt = "推し選手の写真";
-        imgEl.className = "raiden-photo";
-        photoDiv.appendChild(imgEl);
+      // 1) 画像表示
+      const photoArea= document.getElementById('photoArea');
+      if(data.photoDataURL){
+        const img= document.createElement('img');
+        img.src= data.photoDataURL;
+        img.alt= "推し選手の写真";
+        img.className= "raiden-photo";
+        photoArea.appendChild(img);
+      } else {
+        photoArea.textContent= "画像なし or 破棄されました";
       }
 
-      // 3) テキスト項目表示
-      document.getElementById('playerSelectDisplay').textContent  = "推し選手: " + (data.playerSelect || '');
-      document.getElementById('nicknameDisplay').textContent      = "呼び方: " + (data.nickname || '');
-      document.getElementById('favoriteDisplay').textContent      = "好きなところ: " + (data.favoriteThing || '');
-      document.getElementById('fanReasonDisplay').textContent     = "きっかけ: " + (data.fanReason || '');
-      document.getElementById('highlightDisplay').textContent     = "知ってほしい: " + (data.highlight || '');
-      document.getElementById('onewordDisplay').textContent       = "一言: " + (data.oneword || '');
-      document.getElementById('featureDisplay').textContent       = "特徴: " + (data.feature || '');
-      document.getElementById('outingDisplay').textContent        = "一緒に出かけるなら: " + (data.outing || '');
-      document.getElementById('personalityDisplay').textContent   = "性格: " + (data.personality || '');
+      // 2) テキスト項目
+      document.getElementById('playerSelectDisplay').textContent  = "推し選手: " + (data.playerSelect||'');
+      document.getElementById('favoriteThingDisplay').textContent = "推しの好きなところ: " + (data.favoriteThing||'');
+      document.getElementById('fanReasonDisplay').textContent     = "推しの好きになったきっかけ: " + (data.fanReason||'');
+      document.getElementById('highlightDisplay').textContent     = "推しのここを知ってほしい: " + (data.highlight||'');
+      document.getElementById('nicknameDisplay').textContent      = "呼び方: " + (data.nickname||'');
 
-      // 4) 性格チャートを円グラフ
-      const cool   = data.cool   || 0;
-      const cute   = data.cute   || 0;
-      const kind   = data.kind   || 0;
-      const funny  = data.funny  || 0;
-      const strong = data.strong || 0;
-      const sum = cool + cute + kind + funny + strong;
-      let rCool=0,rCute=0,rKind=0,rFunny=0,rStrong=0;
-      if (sum>0) {
+      // 性格チャート
+      const cool = data.cool||0, cute=data.cute||0, kind=data.kind||0, funny=data.funny||0, strong=data.strong||0;
+      const sum= cool + cute + kind + funny + strong;
+      let rCool=0, rCute=0, rKind=0, rFunny=0, rStrong=0;
+      if(sum>0){
         rCool   = cool/sum;
         rCute   = cute/sum;
         rKind   = kind/sum;
@@ -105,57 +92,50 @@
         rStrong = strong/sum;
       }
 
-      const ctx = document.getElementById('myChart').getContext('2d');
+      const ctx= document.getElementById('myChart').getContext('2d');
       new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: ['クール','かわいい','優しい','面白い','強い'],
-          datasets: [{
-            data: [rCool, rCute, rKind, rFunny, rStrong],
-            backgroundColor: [
-              '#66c2a5',
-              '#fc8d62',
-              '#8da0cb',
-              '#e78ac3',
-              '#a6d854'
-            ]
+        type:'pie',
+        data:{
+          labels:['クール','かわいい','優しい','面白い','強い'],
+          datasets:[{
+            data:[rCool,rCute,rKind,rFunny,rStrong],
+            backgroundColor:['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854']
           }]
         },
-        options: {
-          plugins: {
-            legend: {
-              labels: {
-                color: '#FFD700', 
-                font: { size: 14 }
+        options:{
+          plugins:{
+            legend:{
+              labels:{
+                color:'#FFD700',
+                font:{size:14}
               }
             }
           }
         }
       });
 
-      // 5) ベストメモリーズ
-      document.getElementById('memory1Display').textContent = "一番の思い出: " + (data.memory1 || '');
-      document.getElementById('memory2Display').textContent = "輝いて見えたのは: " + (data.memory2 || '');
+      // ベストメモリーズ
+      document.getElementById('memory1Display').textContent= "推しとの一番の思い出はこれだ！: " + (data.memory1||'');
+      document.getElementById('memory2Display').textContent= "推しが一番輝いて見えたのはこの時！: " + (data.memory2||'');
 
-      // 6) ifトーク
-      document.getElementById('teacherDisplay').textContent = "学校の先生にするなら: " + (data.teacher || '');
-      document.getElementById('islandDisplay').textContent  = "無人島行くなら: " + (data.island || '');
-      document.getElementById('bossDisplay').textContent    = "上司にするなら: " + (data.boss || '');
-      document.getElementById('juniorDisplay').textContent  = "後輩にするなら: " + (data.junior || '');
+      // ifトーク
+      document.getElementById('teacherDisplay').textContent= "学校の先生にするなら: " + (data.teacher||'');
+      document.getElementById('islandDisplay').textContent = "一緒に無人島行くなら: " + (data.island||'');
+      document.getElementById('bossDisplay').textContent   = "上司にするなら: " + (data.boss||'');
+      document.getElementById('juniorDisplay').textContent = "後輩にするなら: " + (data.junior||'');
 
-      // 7) 家族に例えるなら
-      document.getElementById('fatherDisplay').textContent  = "父: " + (data.father || '');
-      document.getElementById('motherDisplay').textContent  = "母: " + (data.mother || '');
-      document.getElementById('brotherDisplay').textContent = "兄: " + (data.brother || '');
-      document.getElementById('sisterDisplay').textContent  = "姉: " + (data.sister || '');
-      document.getElementById('youngerBrotherDisplay').textContent = "弟: " + (data.youngerBrother || '');
-      document.getElementById('youngerSisterDisplay').textContent  = "妹: " + (data.youngerSister || '');
-      document.getElementById('petDisplay').textContent     = "ペット: " + (data.pet || '');
+      // 家族に例えるなら
+      document.getElementById('fatherDisplay').textContent = "父: " + (data.father||'');
+      document.getElementById('motherDisplay').textContent = "母: " + (data.mother||'');
+      document.getElementById('brotherDisplay').textContent= "兄: " + (data.brother||'');
+      document.getElementById('sisterDisplay').textContent = "姉: " + (data.sister||'');
+      document.getElementById('youngerBrotherDisplay').textContent= "弟: " + (data.youngerBrother||'');
+      document.getElementById('youngerSisterDisplay').textContent = "妹: " + (data.youngerSister||'');
+      document.getElementById('petDisplay').textContent    = "ペット: " + (data.pet||'');
 
-      // 8) 推しへのメッセージ
-      document.getElementById('messageDisplay').textContent = data.message || '';
+      // メッセージ
+      document.getElementById('messageDisplay').textContent= data.message||'';
     });
   </script>
 </body>
 </html>
-
