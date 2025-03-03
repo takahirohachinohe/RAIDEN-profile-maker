@@ -6,48 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   goPreviewBtn.addEventListener('click', () => {
     statusEl.textContent = "画像を圧縮中...";
 
-    // 1) フォーム項目をまとめ
-    const dataObj = gatherFormData();
-
-    // 2) ファイルチェック
-    const file = photoInput.files[0];
-    if(!file){
-      // 写真なし
-      dataObj.photoDataURL = "";
-      localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
-      window.location.href = "preview.html";
-      return;
-    }
-
-    // 3) FileReaderでBase64化
-    const reader = new FileReader();
-    reader.onload = (e)=>{
-      const originalUrl = e.target.result;
-      if(!originalUrl){
-        dataObj.photoDataURL="";
-        localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
-        window.location.href="preview.html";
-        return;
-      }
-      // 4) 繰り返し圧縮 (5MB以下)
-      compressUntilUnder5MB(originalUrl, (finalUrl)=>{
-        dataObj.photoDataURL = finalUrl;
-        localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
-        window.location.href = "preview.html";
-      });
-    };
-    reader.onerror = ()=>{
-      statusEl.textContent="画像の読み込みに失敗しました";
-      dataObj.photoDataURL="";
-      localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
-      window.location.href="preview.html";
-    };
-    reader.readAsDataURL(file);
-  });
-
-  // フォームから値を収集
-  function gatherFormData(){
-    return {
+    // 全データ収集
+    const dataObj = {
       playerSelect : val('playerSelect'),
       favoriteThing: val('favoriteThing'),
       fanReason    : val('fanReason'),
@@ -72,32 +32,66 @@ document.addEventListener('DOMContentLoaded', () => {
       youngerSister : val('youngerSister'),
       pet    : val('pet'),
       message: val('message'),
-      photoDataURL:"" //あとで入れる
+      photoDataURL:""
     };
-  }
+
+    // ファイルチェック
+    const file = photoInput.files[0];
+    if(!file){
+      dataObj.photoDataURL="";
+      localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
+      window.location.href = "preview.html";
+      return;
+    }
+
+    // FileReader
+    const reader= new FileReader();
+    reader.onload= (e)=>{
+      const originalUrl= e.target.result;
+      if(!originalUrl){
+        dataObj.photoDataURL = "";
+        localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
+        window.location.href="preview.html";
+        return;
+      }
+      // 繰り返し圧縮
+      compressUntilUnder5MB(originalUrl, (finalUrl)=>{
+        dataObj.photoDataURL= finalUrl;
+        localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
+        window.location.href= "preview.html";
+      });
+    };
+    reader.onerror= ()=>{
+      statusEl.textContent = "画像読み込み失敗";
+      dataObj.photoDataURL="";
+      localStorage.setItem('raidenProfileData', JSON.stringify(dataObj));
+      window.location.href="preview.html";
+    };
+    reader.readAsDataURL(file);
+  });
+
   function val(id){ 
     const el= document.getElementById(id);
-    return el? el.value : ""; 
+    return el? el.value:"";
   }
   function num(id){
-    return parseFloat(val(id)) || 0;
+    return parseFloat(val(id))||0;
   }
 
-  // 繰り返し圧縮(5MB以下)
+  // 繰り返し圧縮 (5MB以下)
   function compressUntilUnder5MB(dataUrl, callback){
     const maxBytes= 5*1024*1024;
-    // Base64はファイルの約1.37倍サイズ
-    if(dataUrl.length<= maxBytes*1.37){
+    if(dataUrl.length <= maxBytes*1.37){
       callback(dataUrl);
       return;
     }
-    let qualityStep=9; // 0.9 -> 0.1
-    let current=dataUrl;
+    let qualityStep=9; //0.9→0.1
+    let current= dataUrl;
     function doOne(){
       const q= qualityStep/10;
       compressImage(current,800,q,(newUrl)=>{
         if(!newUrl){ callback(""); return; }
-        if(newUrl.length<= maxBytes*1.37){
+        if(newUrl.length <= maxBytes*1.37){
           callback(newUrl);
         } else {
           qualityStep--;
@@ -113,15 +107,15 @@ document.addEventListener('DOMContentLoaded', () => {
     doOne();
   }
 
-  // 1回の圧縮
-  function compressImage(originalDataUrl, maxWidth, quality, cb){
-    const img=new Image();
+  // 単回圧縮
+  function compressImage(originalUrl, maxWidth, quality, cb){
+    const img= new Image();
     img.onload=()=>{
       const canvas= document.createElement('canvas');
       const ctx= canvas.getContext('2d');
-      let w= img.width;
+      let w= img.width; 
       let h= img.height;
-      if(w> maxWidth){
+      if(w>maxWidth){
         const ratio= maxWidth/w;
         w= maxWidth;
         h= h*ratio;
@@ -132,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const newUrl= canvas.toDataURL("image/jpeg", quality);
       cb(newUrl);
     };
-    img.onerror= ()=> cb("");
-    img.src= originalDataUrl;
+    img.onerror=()=> cb("");
+    img.src= originalUrl;
   }
 });

@@ -6,15 +6,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>TEAM RAIDEN 推しプロフィール 入力</h1>
-  </header>
-
   <main>
-    <div class="profile-container">
-      <h2>推し選手＆基本情報</h2>
+    <h1>TEAM RAIDEN 推しプロフィール 入力</h1>
 
-      <!-- 推し選手選択 -->
+    <div class="profile-container">
+      <h2>推し情報</h2>
       <label for="playerSelect">推し選手を選択</label>
       <select id="playerSelect">
         <option value="" disabled selected>選択してください</option>
@@ -25,37 +21,41 @@
         <option>全員を推す</option>
       </select>
 
-      <!-- 写真アップロード -->
-      <label for="photo">推し選手の好きな写真をアップロード</label>
+      <label for="photo">推し写真 (大容量OK)</label>
       <input type="file" id="photo" accept="image/*" />
 
-      <!-- 好きなところ / 好きになったきっかけ / ここを知ってほしい / 呼び方 -->
       <label for="favoriteThing">推しの好きなところ (13文字まで)</label>
       <input type="text" id="favoriteThing" maxlength="13" />
 
-      <label for="fanReason">推しの好きになったきっかけ (18文字)</label>
+      <label for="fanReason">推しの好きになったきっかけ (18文字まで)</label>
       <input type="text" id="fanReason" maxlength="18" />
 
-      <label for="highlight">推しのここを知ってほしい！ (12文字)</label>
+      <label for="highlight">推しのここを知ってほしい！ (12文字まで)</label>
       <input type="text" id="highlight" maxlength="12" />
 
-      <label for="nickname">推しの呼び方 (10文字)</label>
+      <label for="nickname">推しの呼び方 (10文字まで)</label>
       <input type="text" id="nickname" maxlength="10" />
+    </div>
 
-      <h2>推しの性格チャート</h2>
-      <p>クール:   <input type="number" id="cool"   value="0" />%</p>
-      <p>かわいい:<input type="number" id="cute"   value="0" />%</p>
-      <p>優しい:  <input type="number" id="kind"   value="0" />%</p>
-      <p>面白い:   <input type="number" id="funny"  value="0" />%</p>
+    <div class="profile-container">
+      <h2>性格チャート</h2>
+      <p>クール:   <input type="number" id="cool" value="0" />%</p>
+      <p>かわいい:<input type="number" id="cute" value="0" />%</p>
+      <p>優しい:  <input type="number" id="kind" value="0" />%</p>
+      <p>面白い:   <input type="number" id="funny" value="0" />%</p>
       <p>強い:     <input type="number" id="strong" value="0" />%</p>
+    </div>
 
-      <h2>推しのベストメモリーズ</h2>
-      <label for="memory1">推しとの一番の思い出はこれだ！ (72文字)</label>
+    <div class="profile-container">
+      <h2>ベストメモリーズ</h2>
+      <label for="memory1">推しとの一番の思い出 (72文字まで)</label>
       <textarea id="memory1" rows="3" maxlength="72"></textarea>
 
-      <label for="memory2">推しが一番輝いて見えたのはこの時！ (72文字)</label>
+      <label for="memory2">推しが一番輝いて見えたのは (72文字まで)</label>
       <textarea id="memory2" rows="3" maxlength="72"></textarea>
+    </div>
 
+    <div class="profile-container">
       <h2>ifトーク</h2>
       <label for="teacher">学校の先生にするなら</label>
       <select id="teacher">
@@ -65,7 +65,6 @@
         <option>黒沢咲</option>
         <option>本田朋広</option>
       </select>
-
       <label for="island">一緒に無人島行くなら</label>
       <select id="island">
         <option value="" disabled selected>選択してください</option>
@@ -74,7 +73,6 @@
         <option>黒沢咲</option>
         <option>本田朋広</option>
       </select>
-
       <label for="boss">上司にするなら</label>
       <select id="boss">
         <option value="" disabled selected>選択してください</option>
@@ -83,7 +81,6 @@
         <option>黒沢咲</option>
         <option>本田朋広</option>
       </select>
-
       <label for="junior">後輩にするなら</label>
       <select id="junior">
         <option value="" disabled selected>選択してください</option>
@@ -92,7 +89,9 @@
         <option>黒沢咲</option>
         <option>本田朋広</option>
       </select>
+    </div>
 
+    <div class="profile-container">
       <h2>チームを家族に例えるなら</h2>
       <label for="father">父</label>
       <select id="father">
@@ -150,11 +149,15 @@
         <option>黒沢咲</option>
         <option>本田朋広</option>
       </select>
+    </div>
 
+    <div class="profile-container">
       <h2>推しへのメッセージ</h2>
-      <label for="message">推し選手への愛など自由に</label>
+      <label for="message">推しへの愛など自由に</label>
       <textarea id="message" rows="4" maxlength="148"></textarea>
+    </div>
 
+    <div class="profile-container" style="text-align:center;">
       <button id="goPreviewBtn">2ページ目(プレビュー)へ</button>
       <p id="status"></p>
     </div>

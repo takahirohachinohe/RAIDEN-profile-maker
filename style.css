@@ -1,50 +1,47 @@
-/* ----- 黒×金のTEAM RAIDEN風 ----- */
-body {
-  background-color: #000;
-  color: #FFD700;
-  font-family: "Segoe UI", Verdana, sans-serif;
-  margin: 0;
-  padding: 20px;
+/************************************************************
+ * TEAM RAIDEN 推しプロフィール帳 (横長 1200x675)
+ * カラー: 背景白、アクセントに #FFD700 (ゴールド)
+ ************************************************************/
+ html, body {
+  margin: 0; 
+  padding: 0;
+  background: #f0f0f0; /* 全体の背景を薄いグレー */
+  font-family: "Segoe UI", sans-serif;
+  color: #333; 
 }
 
-/* ヘッダー */
-header {
-  text-align: center;
-  color: #FFFF00; /* 鮮やかな黄色 */
-  margin-bottom: 1em;
-}
-header h1 {
-  margin: 0;
-}
-
-/* メイン */
 main {
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 0 20px;
 }
 
-/* コンテナ */
+/* ====== 1ページ目・2ページ目共通の枠 ====== */
 .profile-container, .preview-container {
-  border: 2px solid #FFFF00;
+  background-color: #fff;
+  border: 2px solid #FFD700;
   border-radius: 8px;
-  background-color: #111;
   padding: 20px;
   margin-bottom: 20px;
-}
-.profile-container h2, .preview-container h2 {
-  color: #FFFF00;
-  border-bottom: 1px solid #FFD700;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  padding-bottom: 5px;
+  box-shadow: 1px 1px 6px rgba(0,0,0,0.1);
 }
 
-/* フォーム要素 */
+/* 見出し */
+.profile-container h2, .preview-container h2 {
+  color: #FFD700;
+  border-bottom: 1px solid #FFD700;
+  padding-bottom: 5px;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-size: 1.2rem;
+}
+
+/* ラベル + フォーム要素 */
 label {
   display: block;
   font-weight: bold;
   margin-bottom: 0.3em;
-  color: #FFFF00;
+  color: #FFD700;
 }
 input[type="text"],
 input[type="file"],
@@ -53,49 +50,133 @@ textarea,
 select {
   width: 100%;
   padding: 8px;
-  background-color: #000;
-  color: #FFD700;
-  border: 1px solid #FFD700;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box;
   margin-bottom: 10px;
+  color: #333;
+  background: #fff;
 }
 
-/* ボタン */
 button {
   background-color: #FFD700;
   color: #000;
   font-weight: bold;
   padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
+  transition: background .2s;
 }
 button:hover {
-  background-color: #FFFF00;
+  background: #ffeb7f; /* 少し明るい黄色 */
 }
 
-/* ステータス表示 */
 #status {
   margin-top: 10px;
-  color: #ff8080;
+  color: #FFD700;
+  font-weight: bold;
 }
 
-/* プレビュー用円グラフコンテナ */
-.chart-container {
-  max-width: 400px;
-  margin: 20px auto;
-  border: 1px solid #FFD700;
-  border-radius: 6px;
+/************************************************************
+ * 2) 2ページ目(プレビュー用: 横長1200x675)
+ ************************************************************/
+#previewContainer {
+  width: 1200px;  /* X向け 16:9 -> 1200x675 */
+  height: 675px;
+  margin: 0 auto;
+  position: relative;
+  background: #fff;
+  border: 2px dashed #FFD700;
+  border-radius: 12px;
+  /* optional shadow to see the container clearly */
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+
+/* レイアウト: flex or gridなどで1枚レイアウト */
+#profileContent {
+  /* フレックスで左右2カラム+下部にメッセージ */
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   padding: 10px;
-  background-color: #222;
+}
+.left-column, .right-column {
+  flex: 1; 
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  /* optional border for debugging: border:1px solid #ccc; */
 }
 
-/* 画像 */
-img.raiden-photo {
-  max-width: 200px;
+/* 写真表示 */
+.photo-area img {
+  max-width: 100%;
+  height: auto;
   border: 2px solid #FFD700;
   border-radius: 8px;
   margin-bottom: 10px;
   display: block;
+}
+
+.info-section {
+  margin-bottom: 15px;
+}
+.info-section .section-title {
+  color: #FFD700;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #FFD700;
+  padding-bottom: 3px;
+}
+.info-item {
+  margin: 4px 0;
+}
+.label {
+  background: #FFD700;
+  color: #000;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+/* 性格チャート */
+.chart-container {
+  max-width: 300px;
+  margin: 0 auto;
+  background: #fff;
+  border: 2px solid #FFD700;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+}
+
+/* 推しへのメッセージ */
+.message-area {
+  margin-top: auto; /* push to bottom if column is tall */
+  border: 2px solid #FFD700;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+}
+.message-area h3 {
+  color: #FFD700;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #FFD700;
+  padding-bottom: 3px;
+}
+.message-area p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* フッターボタン */
+.share-buttons {
+  text-align: center;
+  margin-top: 20px;
 }
