@@ -17,7 +17,7 @@ header h1 {
   margin: 0;
 }
 
-/* メインコンテナ */
+/* メイン */
 main {
   max-width: 1000px;
   margin: 0 auto;
@@ -34,12 +34,12 @@ main {
 .profile-container h2, .preview-container h2 {
   color: #FFFF00;
   border-bottom: 1px solid #FFD700;
-  padding-bottom: 5px;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
+  padding-bottom: 5px;
 }
 
-/* ラベル・入力欄 */
+/* フォーム要素 */
 label {
   display: block;
   font-weight: bold;
@@ -77,11 +77,11 @@ button:hover {
 
 /* ステータス表示 */
 #status {
-  margin-top:10px;
+  margin-top: 10px;
   color: #ff8080;
 }
 
-/* プレビュー用 円グラフ */
+/* プレビュー用円グラフコンテナ */
 .chart-container {
   max-width: 400px;
   margin: 20px auto;
@@ -97,5 +97,5 @@ img.raiden-photo {
   border: 2px solid #FFD700;
   border-radius: 8px;
   margin-bottom: 10px;
-  display:block;
+  display: block;
 }
