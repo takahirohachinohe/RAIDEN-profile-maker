@@ -4,27 +4,61 @@
   <meta charset="UTF-8">
   <title>TEAM RAIDEN - プレビュー</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Chart.js + DataLabels + html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas"></script>
 </head>
 <body>
   <main>
     <h1>TEAM RAIDEN プレビュー (1回目ボタン)</h1>
     <div class="preview-container">
+      <!-- 横長 1200×675 全体 -->
       <div id="previewContainer">
-        <!-- 横幅1200,高さ675 → ここに推し写真/情報/チャート配置 -->
-        <div style="padding:10px;">
-          <img id="photoImg" class="raiden-photo" src="" alt="">
-          <p><b>推し選手:</b> <span id="playerDisplay"></span></p>
-          <p><b>呼び方:</b> <span id="nicknameDisplay"></span></p>
-          <!-- etc... -->
-          <div class="chart-container">
-            <canvas id="myChart"></canvas>
+        <div id="profileContent">
+          <!-- 左カラム -->
+          <div class="column">
+            <h2>推し情報</h2>
+            <img id="photoImg" class="raiden-photo" src="" alt="">
+            <p><b>推し選手:</b> <span id="playerSelectDisplay"></span></p>
+            <p><b>呼び方:</b> <span id="nicknameDisplay"></span></p>
+            <p><b>好きなところ:</b> <span id="favoriteThingDisplay"></span></p>
+            <p><b>きっかけ:</b> <span id="fanReasonDisplay"></span></p>
+            <p><b>ここを知って:</b> <span id="highlightDisplay"></span></p>
+
+            <h2>ifトーク</h2>
+            <p><b>学校の先生:</b> <span id="teacherDisplay"></span></p>
+            <p><b>無人島:</b> <span id="islandDisplay"></span></p>
+            <p><b>上司:</b> <span id="bossDisplay"></span></p>
+            <p><b>後輩:</b> <span id="juniorDisplay"></span></p>
           </div>
-          <p id="messageDisplay"></p>
-        </div>
-      </div>
-    </div>
+
+          <!-- 右カラム -->
+          <div class="column">
+            <h2>性格チャート</h2>
+            <div class="chart-container">
+              <canvas id="myChart"></canvas>
+            </div>
+
+            <h2>ベストメモリーズ</h2>
+            <p><b>一番の思い出:</b> <span id="memory1Display"></span></p>
+            <p><b>輝いた時:</b> <span id="memory2Display"></span></p>
+
+            <h2>家族に例えるなら</h2>
+            <p><b>父:</b> <span id="fatherDisplay"></span></p>
+            <p><b>母:</b> <span id="motherDisplay"></span></p>
+            <p><b>兄:</b> <span id="brotherDisplay"></span></p>
+            <p><b>姉:</b> <span id="sisterDisplay"></span></p>
+            <p><b>弟:</b> <span id="youngerBrotherDisplay"></span></p>
+            <p><b>妹:</b> <span id="youngerSisterDisplay"></span></p>
+            <p><b>ペット:</b> <span id="petDisplay"></span></p>
+
+            <h2>推しへのメッセージ</h2>
+            <p id="messageDisplay"></p>
+          </div>
+        </div><!-- #profileContent -->
+      </div><!-- #previewContainer -->
+    </div><!-- .preview-container -->
 
     <div class="share-buttons">
       <button id="editBtn">修正する</button>
@@ -33,7 +67,7 @@
   </main>
 
   <script>
-    window.addEventListener('DOMContentLoaded',async()=>{
+    window.addEventListener('DOMContentLoaded', async ()=>{
       const dataStr= localStorage.getItem('raidenProfileData');
       if(!dataStr){
         document.body.insertAdjacentHTML('beforeend','<p>データがありません</p>');
@@ -41,26 +75,42 @@
       }
       const data= JSON.parse(dataStr);
 
-      // 写真
+      // 1) 写真
       const photoImg= document.getElementById('photoImg');
       if(data.photoDataURL) photoImg.src= data.photoDataURL;
 
-      // テキスト
-      document.getElementById('playerDisplay').textContent= data.playerSelect||"";
-      document.getElementById('nicknameDisplay').textContent= data.nickname||"";
-      document.getElementById('messageDisplay').textContent= data.message||"";
+      // 2) テキスト
+      id('playerSelectDisplay').textContent= data.playerSelect||"";
+      id('nicknameDisplay').textContent    = data.nickname||"";
+      id('favoriteThingDisplay').textContent= data.favoriteThing||"";
+      id('fanReasonDisplay').textContent   = data.fanReason||"";
+      id('highlightDisplay').textContent   = data.highlight||"";
+      id('memory1Display').textContent     = data.memory1||"";
+      id('memory2Display').textContent     = data.memory2||"";
+      id('teacherDisplay').textContent     = data.teacher||"";
+      id('islandDisplay').textContent      = data.island||"";
+      id('bossDisplay').textContent        = data.boss||"";
+      id('juniorDisplay').textContent      = data.junior||"";
+      id('fatherDisplay').textContent      = data.father||"";
+      id('motherDisplay').textContent      = data.mother||"";
+      id('brotherDisplay').textContent     = data.brother||"";
+      id('sisterDisplay').textContent      = data.sister||"";
+      id('youngerBrotherDisplay').textContent= data.youngerBrother||"";
+      id('youngerSisterDisplay').textContent = data.youngerSister||"";
+      id('petDisplay').textContent         = data.pet||"";
+      id('messageDisplay').textContent     = data.message||"";
 
-      // 性格チャート: 各値
-      const cool= parseFloat(data.cool)||0, cute= parseFloat(data.cute)||0,
-            kind= parseFloat(data.kind)||0, funny= parseFloat(data.funny)||0, strong= parseFloat(data.strong)||0;
-      const sum= cool+ cute+ kind+ funny+ strong;
-      let ratioData= [0,0,0,0,0];
+      // 3) 性格チャート(円グラフに常時%表示)
+      const c= parseFloat(data.cool)||0, cu=parseFloat(data.cute)||0,
+            k= parseFloat(data.kind)||0, f=parseFloat(data.funny)||0, s=parseFloat(data.strong)||0;
+      const sum= c+cu+k+f+s;
+      let ratioData=[0,0,0,0,0];
       if(sum>0){
-        ratioData=[cool/sum,cute/sum,kind/sum,funny/sum,strong/sum];
+        ratioData= [ c/sum, cu/sum, k/sum, f/sum, s/sum ];
       }
       const ctx= document.getElementById('myChart').getContext('2d');
-      new Chart(ctx,{
-        type:'pie',
+      new Chart(ctx, {
+        type: 'pie',
         data:{
           labels:["クール","かわいい","優しい","面白い","強い"],
           datasets:[{
@@ -72,34 +122,45 @@
           plugins:{
             tooltip:{
               callbacks:{
-                label: function(context){
-                  const lbl= context.label || "";
-                  // valueは ratio(0~1)→xx%
-                  const v= context.parsed*100;
-                  return lbl + ": " + v.toFixed(0)+"%";
+                label: (context)=>{
+                  // data: ratio(0~1)
+                  const lbl= context.label||"";
+                  const val= context.parsed*100;
+                  return `${lbl}: ${val.toFixed(0)}%`;
                 }
               }
             },
-            legend:{ labels:{ color:"#333", font:{size:14}}}
+            legend:{ 
+              labels:{ color:"#333", font:{size:14} }
+            },
+            // DataLabels: 常時%表示
+            datalabels:{
+              color:"#fff",
+              formatter: (value, ctx)=>{
+                return (value*100).toFixed(0)+"%";
+              }
+            }
           }
-        }
+        },
+        plugins:[ChartDataLabels]
       });
 
-      document.getElementById('editBtn').addEventListener('click',()=>{
+      // 4) ボタン
+      id('editBtn').addEventListener('click',()=>{
         window.location.href="index.html";
       });
-
-      // 「シェア準備」ボタン
-      document.getElementById('shareStep1Btn').addEventListener('click', async ()=>{
-        // html2canvas→ localStorage.setItem('shareImage', base64)
+      // シェア準備(1回目)
+      id('shareStep1Btn').addEventListener('click', async ()=>{
         const container= document.getElementById('previewContainer');
         const canvas= await html2canvas(container);
         const dataUrl= canvas.toDataURL("image/png");
+        // localStorageに保存
         localStorage.setItem('shareImage', dataUrl);
-
         // 次へ
         window.location.href= "loadingShare.html";
       });
+
+      function id(x){ return document.getElementById(x); }
     });
   </script>
 </body>

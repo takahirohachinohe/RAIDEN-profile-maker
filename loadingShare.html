@@ -8,7 +8,7 @@
 <body>
   <main style="text-align:center;">
     <h1>シェア画面</h1>
-    <p>画像を準備しました。<br>もう一度ボタンを押すとXでシェアします。</p>
+    <p>画像の準備ができました。<br>もう一度ボタンを押すとXでシェアします。</p>
     <button id="shareFinalBtn">Xでシェア</button>
     <p id="status"></p>
   </main>
@@ -17,28 +17,25 @@
     document.getElementById('shareFinalBtn').addEventListener('click',()=>{
       const dataUrl= localStorage.getItem('shareImage');
       if(!dataUrl){
-        document.getElementById('status').textContent= "画像がありません";
+        document.getElementById('status').textContent="画像がありません";
         return;
       }
-      // dataURL->Blob->File
       const blob= dataURLtoBlob(dataUrl);
       const file= new File([blob],"raiden-profile.png",{type:"image/png"});
-
-      // Web Share API
       if(navigator.canShare && navigator.canShare({ files:[file] })){
         navigator.share({
-          text: "TEAM RAIDEN 推しプロフィール！",
+          text: "TEAM RAIDEN 推しプロフ作成！",
           files: [file]
         }).catch(err=>{
           console.warn("シェア失敗 or キャンセル", err);
           document.getElementById('status').textContent="シェアがキャンセルされました";
         });
       } else {
-        // フォールバック: テキストのみ
-        const text= "TEAM RAIDEN 推しプロフ！(画像は手動でアップしてね)";
-        const tweetUrl= "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
-        window.open(tweetUrl, "_blank");
-        document.getElementById('status').textContent="Web Share非対応のためテキスト投稿のみ";
+        // テキストのみ
+        const text= "TEAM RAIDEN 推しプロフ！(画像は別途アップしてね)";
+        const tweetUrl= "https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+        window.open(tweetUrl,"_blank");
+        document.getElementById('status').textContent="Web Share非対応のためテキストのみ";
       }
     });
 
@@ -56,4 +53,3 @@
   </script>
 </body>
 </html>
-
