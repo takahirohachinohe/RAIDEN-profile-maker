@@ -1,6 +1,5 @@
 /************************************************************
- * TEAM RAIDEN 推しプロフィール (2ステップシェア対応)
- * デザイン: 白背景＋金色(#FFD700)アクセント
+ * TEAM RAIDEN 推しプロフ (家族写真対応 + 2ステップシェア)
  ************************************************************/
  html, body {
   margin: 0; 
@@ -15,7 +14,7 @@ main {
   padding: 0 20px;
 }
 
-/* 全ページ共通の枠 */
+/* 枠 */
 .profile-container, .preview-container {
   background-color: #fff;
   border: 2px solid #FFD700;
@@ -33,7 +32,7 @@ main {
   font-size: 1.1rem;
 }
 
-/* ラベル + 入力欄 */
+/* ラベル + フォーム */
 label {
   display: block;
   font-weight: bold;
@@ -75,30 +74,29 @@ button:hover {
 }
 
 /************************************************************
- * 2ページ目(プレビュー)のレイアウト (可変高さ)
+ * 2ページ目(プレビュー): 可変高さ (質問多くても切れない)
  ************************************************************/
 #previewContainer {
-  width: 1200px;          /* 幅1200 (X向け16:9想定だが高さは可変) */
+  width: 1200px; /* 横幅固定 */
   margin: 0 auto;
   border: 2px dashed #FFD700;
   border-radius: 12px;
   position: relative;
   background: #fff;
   box-sizing: border-box;
-  padding-bottom: 20px;   /* 下部余白 */
+  padding-bottom: 20px;
 }
 
-/* 中身をフレックスで2カラム(折り返し) */
 #profileContent {
   display: flex;
-  flex-wrap: wrap; /* 多い項目があれば折り返す */
+  flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
 }
 .column {
-  flex: 1 1 50%; 
-  min-width: 300px; 
+  flex: 1 1 50%;
+  min-width: 300px;
   box-sizing: border-box;
   padding: 10px;
 }
@@ -113,7 +111,7 @@ button:hover {
   box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
 }
 
-/* 写真 */
+/* 通常の写真(推し情報) */
 img.raiden-photo {
   max-width: 300px;
   border: 2px solid #FFD700;
@@ -122,7 +120,33 @@ img.raiden-photo {
   margin-bottom: 10px;
 }
 
-/* ボタンエリア */
+/************************************************************
+ * 家系図エリア (父/母/兄/姉/弟/妹/ペット)
+ ************************************************************/
+#familyTree {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.family-slot {
+  width: 120px;
+  text-align: center;
+}
+.family-slot p {
+  font-weight: bold;
+  margin: 2px 0;
+  color: #FFD700;
+}
+.family-slot img {
+  width: 100px; 
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #FFD700;
+  border-radius: 8px;
+}
+
+/* ボタン群 */
 .share-buttons {
   text-align: center;
   margin-top: 20px;

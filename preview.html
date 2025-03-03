@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>TEAM RAIDEN - プレビュー (可変高さ)</title>
+  <title>TEAM RAIDEN - プレビュー (家系図写真)</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chart.js + DataLabels + html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,12 +11,14 @@
 </head>
 <body>
   <main>
-    <h1>TEAM RAIDEN プレビュー (可変高さ)</h1>
+    <h1>TEAM RAIDEN プレビュー (家系図写真)</h1>
+
     <div class="preview-container">
       <!-- 可変高さ: 全質問が多くても切れない -->
       <div id="previewContainer">
         <div id="profileContent">
-          <!-- カラム1 -->
+
+          <!-- 左カラム -->
           <div class="column">
             <h2>推し情報</h2>
             <img id="photoImg" class="raiden-photo" src="" alt="">
@@ -31,18 +33,9 @@
             <p><b>無人島:</b> <span id="islandDisplay"></span></p>
             <p><b>上司:</b> <span id="bossDisplay"></span></p>
             <p><b>後輩:</b> <span id="juniorDisplay"></span></p>
-
-            <h2>家族に例えるなら</h2>
-            <p><b>父:</b> <span id="fatherDisplay"></span></p>
-            <p><b>母:</b> <span id="motherDisplay"></span></p>
-            <p><b>兄:</b> <span id="brotherDisplay"></span></p>
-            <p><b>姉:</b> <span id="sisterDisplay"></span></p>
-            <p><b>弟:</b> <span id="youngerBrotherDisplay"></span></p>
-            <p><b>妹:</b> <span id="youngerSisterDisplay"></span></p>
-            <p><b>ペット:</b> <span id="petDisplay"></span></p>
           </div>
 
-          <!-- カラム2 -->
+          <!-- 右カラム -->
           <div class="column">
             <h2>性格チャート</h2>
             <div class="chart-container">
@@ -53,9 +46,42 @@
             <p><b>一番の思い出:</b> <span id="memory1Display"></span></p>
             <p><b>輝いた時:</b> <span id="memory2Display"></span></p>
 
+            <h2>家族に例えるなら (写真)</h2>
+            <div id="familyTree">
+              <div class="family-slot">
+                <p>父</p>
+                <img id="fatherPhoto" src="" alt="父選手">
+              </div>
+              <div class="family-slot">
+                <p>母</p>
+                <img id="motherPhoto" src="" alt="母選手">
+              </div>
+              <div class="family-slot">
+                <p>兄</p>
+                <img id="brotherPhoto" src="" alt="兄選手">
+              </div>
+              <div class="family-slot">
+                <p>姉</p>
+                <img id="sisterPhoto" src="" alt="姉選手">
+              </div>
+              <div class="family-slot">
+                <p>弟</p>
+                <img id="youngerBrotherPhoto" src="" alt="弟選手">
+              </div>
+              <div class="family-slot">
+                <p>妹</p>
+                <img id="youngerSisterPhoto" src="" alt="妹選手">
+              </div>
+              <div class="family-slot">
+                <p>ペット</p>
+                <img id="petPhoto" src="" alt="ペット選手">
+              </div>
+            </div>
+
             <h2>推しへのメッセージ</h2>
             <p id="messageDisplay"></p>
-          </div>
+          </div><!-- .column -->
+
         </div><!-- #profileContent -->
       </div><!-- #previewContainer -->
     </div><!-- .preview-container -->
@@ -68,6 +94,16 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', async ()=>{
+      /********************************************************
+       * 0) 選手名→写真ファイルのマップ
+       ********************************************************/
+      const playerPhotoMap = {
+        "萩原聖人" :  "images/hagiwara.jpg",
+        "瀬戸熊直樹": "images/setokuma.jpg",
+        "黒沢咲"  :  "images/kurosawa.jpg",
+        "本田朋広" :  "images/honda.jpg"
+      };
+
       const dataStr= localStorage.getItem('raidenProfileData');
       if(!dataStr){
         document.body.insertAdjacentHTML('beforeend','<p>データがありません</p>');
@@ -75,13 +111,13 @@
       }
       const data= JSON.parse(dataStr);
 
-      // 写真
+      // 1) 推し写真
       const photoImg= document.getElementById('photoImg');
       if(data.photoDataURL){
         photoImg.src= data.photoDataURL;
       }
 
-      // テキスト埋め込み
+      // 2) テキスト (推し情報, ifトーク, etc.)
       id('playerSelectDisplay').textContent   = data.playerSelect||"";
       id('nicknameDisplay').textContent       = data.nickname||"";
       id('favoriteThingDisplay').textContent  = data.favoriteThing||"";
@@ -93,25 +129,37 @@
       id('islandDisplay').textContent         = data.island||"";
       id('bossDisplay').textContent           = data.boss||"";
       id('juniorDisplay').textContent         = data.junior||"";
-      id('fatherDisplay').textContent         = data.father||"";
-      id('motherDisplay').textContent         = data.mother||"";
-      id('brotherDisplay').textContent        = data.brother||"";
-      id('sisterDisplay').textContent         = data.sister||"";
-      id('youngerBrotherDisplay').textContent = data.youngerBrother||"";
-      id('youngerSisterDisplay').textContent  = data.youngerSister||"";
-      id('petDisplay').textContent            = data.pet||"";
       id('messageDisplay').textContent        = data.message||"";
 
-      // 性格チャート(常時パーセント)
-      const c= parseFloat(data.cool)||0, cu= parseFloat(data.cute)||0,
-            k= parseFloat(data.kind)||0, f= parseFloat(data.funny)||0, s= parseFloat(data.strong)||0;
+      // 3) 家族に例えるなら(写真)
+      setFamilyPhoto("father", data.father);
+      setFamilyPhoto("mother", data.mother);
+      setFamilyPhoto("brother", data.brother);
+      setFamilyPhoto("sister", data.sister);
+      setFamilyPhoto("youngerBrother", data.youngerBrother);
+      setFamilyPhoto("youngerSister", data.youngerSister);
+      setFamilyPhoto("pet", data.pet);
+
+      function setFamilyPhoto(role, playerName){
+        // 例: fatherPhoto, motherPhoto ...
+        const photoId   = role + "Photo";
+        const photoPath = playerPhotoMap[playerName] || "images/noimage.png";
+        const imgEl     = document.getElementById(photoId);
+        if(imgEl) imgEl.src= photoPath;
+      }
+
+      // 4) 性格チャート(常時%表示)
+      const c= parseFloat(data.cool)||0, 
+            cu=parseFloat(data.cute)||0,
+            k= parseFloat(data.kind)||0, 
+            f= parseFloat(data.funny)||0, 
+            s= parseFloat(data.strong)||0;
       const sum= c+cu+k+f+s;
       let ratioData=[0,0,0,0,0];
       if(sum>0){
         ratioData= [ c/sum, cu/sum, k/sum, f/sum, s/sum ];
       }
-      const ctx= id('myChart').getContext('2d');
-      new Chart(ctx, {
+      new Chart(id('myChart').getContext('2d'),{
         type:'pie',
         data:{
           labels:["クール","かわいい","優しい","面白い","強い"],
@@ -124,9 +172,9 @@
           plugins:{
             tooltip:{
               callbacks:{
-                label:(context)=>{
-                  const lbl= context.label||"";
-                  const val= context.parsed*100;
+                label:(ctx)=>{
+                  const lbl= ctx.label||"";
+                  const val= ctx.parsed*100;
                   return `${lbl}: ${val.toFixed(0)}%`;
                 }
               }
@@ -136,7 +184,7 @@
             },
             datalabels:{
               color:"#fff",
-              formatter: (value, ctx)=> (value*100).toFixed(0)+"%"
+              formatter: (value, c)=> (value*100).toFixed(0)+"%"
             }
           }
         },
@@ -148,8 +196,8 @@
         window.location.href="index.html";
       });
       id('shareStep1Btn').addEventListener('click', async ()=>{
+        // html2canvas
         const container= id('previewContainer');
-        // html2canvas(可変高さ)
         const canvas= await html2canvas(container,{
           windowWidth: document.body.scrollWidth,
           windowHeight: document.body.scrollHeight
