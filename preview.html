@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>TEAM RAIDEN - プレビュー</title>
+  <title>TEAM RAIDEN - プレビュー (可変高さ)</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chart.js + DataLabels + html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,38 +11,26 @@
 </head>
 <body>
   <main>
-    <h1>TEAM RAIDEN プレビュー (1回目ボタン)</h1>
+    <h1>TEAM RAIDEN プレビュー (可変高さ)</h1>
     <div class="preview-container">
-      <!-- 横長 1200×675 全体 -->
+      <!-- 可変高さ: 全質問が多くても切れない -->
       <div id="previewContainer">
         <div id="profileContent">
-          <!-- 左カラム -->
+          <!-- カラム1 -->
           <div class="column">
             <h2>推し情報</h2>
             <img id="photoImg" class="raiden-photo" src="" alt="">
             <p><b>推し選手:</b> <span id="playerSelectDisplay"></span></p>
             <p><b>呼び方:</b> <span id="nicknameDisplay"></span></p>
             <p><b>好きなところ:</b> <span id="favoriteThingDisplay"></span></p>
-            <p><b>きっかけ:</b> <span id="fanReasonDisplay"></span></p>
-            <p><b>ここを知って:</b> <span id="highlightDisplay"></span></p>
+            <p><b>好きになったきっかけ:</b> <span id="fanReasonDisplay"></span></p>
+            <p><b>ここを知ってほしい:</b> <span id="highlightDisplay"></span></p>
 
             <h2>ifトーク</h2>
             <p><b>学校の先生:</b> <span id="teacherDisplay"></span></p>
             <p><b>無人島:</b> <span id="islandDisplay"></span></p>
             <p><b>上司:</b> <span id="bossDisplay"></span></p>
             <p><b>後輩:</b> <span id="juniorDisplay"></span></p>
-          </div>
-
-          <!-- 右カラム -->
-          <div class="column">
-            <h2>性格チャート</h2>
-            <div class="chart-container">
-              <canvas id="myChart"></canvas>
-            </div>
-
-            <h2>ベストメモリーズ</h2>
-            <p><b>一番の思い出:</b> <span id="memory1Display"></span></p>
-            <p><b>輝いた時:</b> <span id="memory2Display"></span></p>
 
             <h2>家族に例えるなら</h2>
             <p><b>父:</b> <span id="fatherDisplay"></span></p>
@@ -52,6 +40,18 @@
             <p><b>弟:</b> <span id="youngerBrotherDisplay"></span></p>
             <p><b>妹:</b> <span id="youngerSisterDisplay"></span></p>
             <p><b>ペット:</b> <span id="petDisplay"></span></p>
+          </div>
+
+          <!-- カラム2 -->
+          <div class="column">
+            <h2>性格チャート</h2>
+            <div class="chart-container">
+              <canvas id="myChart"></canvas>
+            </div>
+
+            <h2>ベストメモリーズ</h2>
+            <p><b>一番の思い出:</b> <span id="memory1Display"></span></p>
+            <p><b>輝いた時:</b> <span id="memory2Display"></span></p>
 
             <h2>推しへのメッセージ</h2>
             <p id="messageDisplay"></p>
@@ -75,42 +75,44 @@
       }
       const data= JSON.parse(dataStr);
 
-      // 1) 写真
+      // 写真
       const photoImg= document.getElementById('photoImg');
-      if(data.photoDataURL) photoImg.src= data.photoDataURL;
+      if(data.photoDataURL){
+        photoImg.src= data.photoDataURL;
+      }
 
-      // 2) テキスト
-      id('playerSelectDisplay').textContent= data.playerSelect||"";
-      id('nicknameDisplay').textContent    = data.nickname||"";
-      id('favoriteThingDisplay').textContent= data.favoriteThing||"";
-      id('fanReasonDisplay').textContent   = data.fanReason||"";
-      id('highlightDisplay').textContent   = data.highlight||"";
-      id('memory1Display').textContent     = data.memory1||"";
-      id('memory2Display').textContent     = data.memory2||"";
-      id('teacherDisplay').textContent     = data.teacher||"";
-      id('islandDisplay').textContent      = data.island||"";
-      id('bossDisplay').textContent        = data.boss||"";
-      id('juniorDisplay').textContent      = data.junior||"";
-      id('fatherDisplay').textContent      = data.father||"";
-      id('motherDisplay').textContent      = data.mother||"";
-      id('brotherDisplay').textContent     = data.brother||"";
-      id('sisterDisplay').textContent      = data.sister||"";
-      id('youngerBrotherDisplay').textContent= data.youngerBrother||"";
-      id('youngerSisterDisplay').textContent = data.youngerSister||"";
-      id('petDisplay').textContent         = data.pet||"";
-      id('messageDisplay').textContent     = data.message||"";
+      // テキスト埋め込み
+      id('playerSelectDisplay').textContent   = data.playerSelect||"";
+      id('nicknameDisplay').textContent       = data.nickname||"";
+      id('favoriteThingDisplay').textContent  = data.favoriteThing||"";
+      id('fanReasonDisplay').textContent      = data.fanReason||"";
+      id('highlightDisplay').textContent      = data.highlight||"";
+      id('memory1Display').textContent        = data.memory1||"";
+      id('memory2Display').textContent        = data.memory2||"";
+      id('teacherDisplay').textContent        = data.teacher||"";
+      id('islandDisplay').textContent         = data.island||"";
+      id('bossDisplay').textContent           = data.boss||"";
+      id('juniorDisplay').textContent         = data.junior||"";
+      id('fatherDisplay').textContent         = data.father||"";
+      id('motherDisplay').textContent         = data.mother||"";
+      id('brotherDisplay').textContent        = data.brother||"";
+      id('sisterDisplay').textContent         = data.sister||"";
+      id('youngerBrotherDisplay').textContent = data.youngerBrother||"";
+      id('youngerSisterDisplay').textContent  = data.youngerSister||"";
+      id('petDisplay').textContent            = data.pet||"";
+      id('messageDisplay').textContent        = data.message||"";
 
-      // 3) 性格チャート(円グラフに常時%表示)
-      const c= parseFloat(data.cool)||0, cu=parseFloat(data.cute)||0,
-            k= parseFloat(data.kind)||0, f=parseFloat(data.funny)||0, s=parseFloat(data.strong)||0;
+      // 性格チャート(常時パーセント)
+      const c= parseFloat(data.cool)||0, cu= parseFloat(data.cute)||0,
+            k= parseFloat(data.kind)||0, f= parseFloat(data.funny)||0, s= parseFloat(data.strong)||0;
       const sum= c+cu+k+f+s;
       let ratioData=[0,0,0,0,0];
       if(sum>0){
         ratioData= [ c/sum, cu/sum, k/sum, f/sum, s/sum ];
       }
-      const ctx= document.getElementById('myChart').getContext('2d');
+      const ctx= id('myChart').getContext('2d');
       new Chart(ctx, {
-        type: 'pie',
+        type:'pie',
         data:{
           labels:["クール","かわいい","優しい","面白い","強い"],
           datasets:[{
@@ -122,41 +124,38 @@
           plugins:{
             tooltip:{
               callbacks:{
-                label: (context)=>{
-                  // data: ratio(0~1)
+                label:(context)=>{
                   const lbl= context.label||"";
                   const val= context.parsed*100;
                   return `${lbl}: ${val.toFixed(0)}%`;
                 }
               }
             },
-            legend:{ 
-              labels:{ color:"#333", font:{size:14} }
+            legend:{
+              labels:{ color:"#333", font:{size:14}}
             },
-            // DataLabels: 常時%表示
             datalabels:{
               color:"#fff",
-              formatter: (value, ctx)=>{
-                return (value*100).toFixed(0)+"%";
-              }
+              formatter: (value, ctx)=> (value*100).toFixed(0)+"%"
             }
           }
         },
         plugins:[ChartDataLabels]
       });
 
-      // 4) ボタン
+      // ボタン
       id('editBtn').addEventListener('click',()=>{
         window.location.href="index.html";
       });
-      // シェア準備(1回目)
       id('shareStep1Btn').addEventListener('click', async ()=>{
-        const container= document.getElementById('previewContainer');
-        const canvas= await html2canvas(container);
+        const container= id('previewContainer');
+        // html2canvas(可変高さ)
+        const canvas= await html2canvas(container,{
+          windowWidth: document.body.scrollWidth,
+          windowHeight: document.body.scrollHeight
+        });
         const dataUrl= canvas.toDataURL("image/png");
-        // localStorageに保存
         localStorage.setItem('shareImage', dataUrl);
-        // 次へ
         window.location.href= "loadingShare.html";
       });
 
