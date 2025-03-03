@@ -2,260 +2,104 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>TEAM RAIDEN 推しプロフ - プレビュー</title>
+  <title>TEAM RAIDEN - プレビュー</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js + html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas"></script>
 </head>
 <body>
   <main>
-    <h1>TEAM RAIDEN 推しプロフィール - プレビュー</h1>
-
+    <h1>TEAM RAIDEN プレビュー (1回目ボタン)</h1>
     <div class="preview-container">
-      <!-- 横長(1200x675)の枠 -->
       <div id="previewContainer">
-        <!-- 全コンテンツをフレックス配置 -->
-        <div id="profileContent">
-          <!-- 左カラム -->
-          <div class="left-column">
-            <div class="photo-area">
-              <img id="photoImg" class="raiden-photo" src="" alt="">
-            </div>
-
-            <div class="info-section">
-              <div class="section-title">推し情報</div>
-              <div class="info-item">
-                <span class="label">推し選手:</span>
-                <span id="playerSelectDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">呼び方:</span>
-                <span id="nicknameDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">好きなところ:</span>
-                <span id="favoriteThingDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">きっかけ:</span>
-                <span id="fanReasonDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">ここを知って:</span>
-                <span id="highlightDisplay"></span>
-              </div>
-            </div>
-
-            <div class="info-section">
-              <div class="section-title">ベストメモリーズ</div>
-              <div class="info-item">
-                <span class="label">思い出:</span>
-                <span id="memory1Display"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">輝いた時:</span>
-                <span id="memory2Display"></span>
-              </div>
-            </div>
-
-            <div class="info-section">
-              <div class="section-title">ifトーク</div>
-              <div class="info-item">
-                <span class="label">先生:</span>
-                <span id="teacherDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">無人島:</span>
-                <span id="islandDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">上司:</span>
-                <span id="bossDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">後輩:</span>
-                <span id="juniorDisplay"></span>
-              </div>
-            </div>
-
-            <div class="info-section">
-              <div class="section-title">家族に例えるなら</div>
-              <div class="info-item">
-                <span class="label">父:</span>
-                <span id="fatherDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">母:</span>
-                <span id="motherDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">兄:</span>
-                <span id="brotherDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">姉:</span>
-                <span id="sisterDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">弟:</span>
-                <span id="youngerBrotherDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">妹:</span>
-                <span id="youngerSisterDisplay"></span>
-              </div>
-              <div class="info-item">
-                <span class="label">ペット:</span>
-                <span id="petDisplay"></span>
-              </div>
-            </div>
-          </div><!-- .left-column -->
-
-          <!-- 右カラム -->
-          <div class="right-column">
-            <div class="chart-container">
-              <canvas id="myChart"></canvas>
-            </div>
-            <div class="message-area">
-              <h3>推しへのメッセージ</h3>
-              <p id="messageDisplay"></p>
-            </div>
-          </div><!-- .right-column -->
-        </div><!-- #profileContent -->
-      </div><!-- #previewContainer -->
-    </div><!-- .preview-container -->
+        <!-- 横幅1200,高さ675 → ここに推し写真/情報/チャート配置 -->
+        <div style="padding:10px;">
+          <img id="photoImg" class="raiden-photo" src="" alt="">
+          <p><b>推し選手:</b> <span id="playerDisplay"></span></p>
+          <p><b>呼び方:</b> <span id="nicknameDisplay"></span></p>
+          <!-- etc... -->
+          <div class="chart-container">
+            <canvas id="myChart"></canvas>
+          </div>
+          <p id="messageDisplay"></p>
+        </div>
+      </div>
+    </div>
 
     <div class="share-buttons">
       <button id="editBtn">修正する</button>
-      <button id="downloadImgBtn">画像のみ</button>
-      <button id="shareXBtn">Xでシェア</button>
+      <button id="shareStep1Btn">シェア準備</button>
     </div>
   </main>
 
   <script>
-    window.addEventListener('DOMContentLoaded', async ()=>{
-      const dataStr = localStorage.getItem('raidenProfileData');
+    window.addEventListener('DOMContentLoaded',async()=>{
+      const dataStr= localStorage.getItem('raidenProfileData');
       if(!dataStr){
         document.body.insertAdjacentHTML('beforeend','<p>データがありません</p>');
         return;
       }
-      const data = JSON.parse(dataStr);
+      const data= JSON.parse(dataStr);
 
       // 写真
       const photoImg= document.getElementById('photoImg');
-      if(data.photoDataURL){
-        photoImg.src= data.photoDataURL;
-      } else {
-        photoImg.src= ""; // no photo
-      }
+      if(data.photoDataURL) photoImg.src= data.photoDataURL;
 
-      // テキスト項目
-      document.getElementById('playerSelectDisplay').textContent     = data.playerSelect || "";
-      document.getElementById('nicknameDisplay').textContent         = data.nickname     || "";
-      document.getElementById('favoriteThingDisplay').textContent    = data.favoriteThing|| "";
-      document.getElementById('fanReasonDisplay').textContent        = data.fanReason    || "";
-      document.getElementById('highlightDisplay').textContent        = data.highlight    || "";
-      document.getElementById('memory1Display').textContent          = data.memory1      || "";
-      document.getElementById('memory2Display').textContent          = data.memory2      || "";
-      document.getElementById('teacherDisplay').textContent          = data.teacher      || "";
-      document.getElementById('islandDisplay').textContent           = data.island       || "";
-      document.getElementById('bossDisplay').textContent             = data.boss         || "";
-      document.getElementById('juniorDisplay').textContent           = data.junior       || "";
-      document.getElementById('fatherDisplay').textContent           = data.father       || "";
-      document.getElementById('motherDisplay').textContent           = data.mother       || "";
-      document.getElementById('brotherDisplay').textContent          = data.brother      || "";
-      document.getElementById('sisterDisplay').textContent           = data.sister       || "";
-      document.getElementById('youngerBrotherDisplay').textContent   = data.youngerBrother || "";
-      document.getElementById('youngerSisterDisplay').textContent    = data.youngerSister  || "";
-      document.getElementById('petDisplay').textContent              = data.pet          || "";
-      document.getElementById('messageDisplay').textContent          = data.message      || "";
+      // テキスト
+      document.getElementById('playerDisplay').textContent= data.playerSelect||"";
+      document.getElementById('nicknameDisplay').textContent= data.nickname||"";
+      document.getElementById('messageDisplay').textContent= data.message||"";
 
-      // 性格チャート
-      const cool   = parseFloat(data.cool)||0;
-      const cute   = parseFloat(data.cute)||0;
-      const kind   = parseFloat(data.kind)||0;
-      const funny  = parseFloat(data.funny)||0;
-      const strong = parseFloat(data.strong)||0;
-      const sum= (cool+ cute+ kind+ funny+ strong);
-      let rCool=0, rCute=0, rKind=0, rFunny=0, rStrong=0;
+      // 性格チャート: 各値
+      const cool= parseFloat(data.cool)||0, cute= parseFloat(data.cute)||0,
+            kind= parseFloat(data.kind)||0, funny= parseFloat(data.funny)||0, strong= parseFloat(data.strong)||0;
+      const sum= cool+ cute+ kind+ funny+ strong;
+      let ratioData= [0,0,0,0,0];
       if(sum>0){
-        rCool= cool/sum; 
-        rCute= cute/sum; 
-        rKind= kind/sum; 
-        rFunny= funny/sum; 
-        rStrong= strong/sum;
+        ratioData=[cool/sum,cute/sum,kind/sum,funny/sum,strong/sum];
       }
-
       const ctx= document.getElementById('myChart').getContext('2d');
-      new Chart(ctx, {
+      new Chart(ctx,{
         type:'pie',
         data:{
-          labels: ["クール","かわいい","優しい","面白い","強い"],
+          labels:["クール","かわいい","優しい","面白い","強い"],
           datasets:[{
-            data: [rCool,rCute,rKind,rFunny,rStrong],
+            data: ratioData,
             backgroundColor:["#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854"]
           }]
         },
         options:{
           plugins:{
-            legend:{ labels:{ color:"#333", font:{size:14} } }
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  const lbl= context.label || "";
+                  // valueは ratio(0~1)→xx%
+                  const v= context.parsed*100;
+                  return lbl + ": " + v.toFixed(0)+"%";
+                }
+              }
+            },
+            legend:{ labels:{ color:"#333", font:{size:14}}}
           }
         }
       });
 
-      // ボタン機能
       document.getElementById('editBtn').addEventListener('click',()=>{
         window.location.href="index.html";
       });
 
-      // 画像のみ (html2canvas)
-      document.getElementById('downloadImgBtn').addEventListener('click', async ()=>{
-        const container= document.getElementById('previewContainer');
-        const canvas= await html2canvas(container);
-        const a= document.createElement('a');
-        a.download= "raiden-profile.png";
-        a.href= canvas.toDataURL("image/png");
-        a.click();
-      });
-
-      // Xでシェア
-      document.getElementById('shareXBtn').addEventListener('click', async ()=>{
+      // 「シェア準備」ボタン
+      document.getElementById('shareStep1Btn').addEventListener('click', async ()=>{
+        // html2canvas→ localStorage.setItem('shareImage', base64)
         const container= document.getElementById('previewContainer');
         const canvas= await html2canvas(container);
         const dataUrl= canvas.toDataURL("image/png");
-        if(navigator.canShare && navigator.canShare({ files: [] })) {
-          // 画像付き投稿
-          const blob= dataURLtoBlob(dataUrl);
-          const file= new File([blob], "raiden-profile.png", { type:"image/png" });
-          try {
-            await navigator.share({
-              text: "TEAM RAIDEN 推しプロフィールを作成！",
-              files: [file]
-            });
-          } catch(e) {
-            console.warn("シェア失敗 or キャンセル", e);
-          }
-        } else {
-          // テキストのみ
-          const text= "TEAM RAIDEN 推しプロフ！(画像は別途アップしてね)";
-          const tweetUrl= "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
-          window.open(tweetUrl,"_blank");
-        }
-      });
+        localStorage.setItem('shareImage', dataUrl);
 
-      // helper
-      function dataURLtoBlob(dataurl){
-        const arr= dataurl.split(',');
-        const mime= arr[0].match(/:(.*?);/)[1];
-        const bstr= atob(arr[1]);
-        let n= bstr.length;
-        const u8arr= new Uint8Array(n);
-        for(let i=0;i<n;i++){
-          u8arr[i]= bstr.charCodeAt(i);
-        }
-        return new Blob([u8arr], {type:mime});
-      }
+        // 次へ
+        window.location.href= "loadingShare.html";
+      });
     });
   </script>
 </body>

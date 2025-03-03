@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>TEAM RAIDEN 推しプロフ - 入力</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -21,37 +21,43 @@
         <option>全員を推す</option>
       </select>
 
-      <label for="photo">推し写真 (大容量OK)</label>
+      <label for="photo">推し写真</label>
       <input type="file" id="photo" accept="image/*" />
 
-      <label for="favoriteThing">推しの好きなところ (13文字まで)</label>
+      <label for="favoriteThing">推しの好きなところ(13文字)</label>
       <input type="text" id="favoriteThing" maxlength="13" />
 
-      <label for="fanReason">推しの好きになったきっかけ (18文字まで)</label>
+      <label for="fanReason">推しの好きになったきっかけ(18文字)</label>
       <input type="text" id="fanReason" maxlength="18" />
 
-      <label for="highlight">推しのここを知ってほしい！ (12文字まで)</label>
+      <label for="highlight">推しのここを知ってほしい(12文字)</label>
       <input type="text" id="highlight" maxlength="12" />
 
-      <label for="nickname">推しの呼び方 (10文字まで)</label>
+      <label for="nickname">推しの呼び方(10文字)</label>
       <input type="text" id="nickname" maxlength="10" />
     </div>
 
     <div class="profile-container">
       <h2>性格チャート</h2>
-      <p>クール:   <input type="number" id="cool" value="0" />%</p>
-      <p>かわいい:<input type="number" id="cute" value="0" />%</p>
-      <p>優しい:  <input type="number" id="kind" value="0" />%</p>
-      <p>面白い:   <input type="number" id="funny" value="0" />%</p>
-      <p>強い:     <input type="number" id="strong" value="0" />%</p>
+      <!-- 全角/半角どちらでもOK。デフォ値なし -->
+      <label>クール</label>
+      <input type="text" id="cool" placeholder="数値" />
+      <label>かわいい</label>
+      <input type="text" id="cute" placeholder="数値" />
+      <label>優しい</label>
+      <input type="text" id="kind" placeholder="数値" />
+      <label>面白い</label>
+      <input type="text" id="funny" placeholder="数値" />
+      <label>強い</label>
+      <input type="text" id="strong" placeholder="数値" />
     </div>
 
     <div class="profile-container">
       <h2>ベストメモリーズ</h2>
-      <label for="memory1">推しとの一番の思い出 (72文字まで)</label>
+      <label for="memory1">推しとの一番の思い出 (72文字)</label>
       <textarea id="memory1" rows="3" maxlength="72"></textarea>
 
-      <label for="memory2">推しが一番輝いて見えたのは (72文字まで)</label>
+      <label for="memory2">推しが一番輝いて見えたのは(72文字)</label>
       <textarea id="memory2" rows="3" maxlength="72"></textarea>
     </div>
 
@@ -92,7 +98,7 @@
     </div>
 
     <div class="profile-container">
-      <h2>チームを家族に例えるなら</h2>
+      <h2>家族に例えるなら</h2>
       <label for="father">父</label>
       <select id="father">
         <option value="" disabled selected>選択してください</option>
@@ -153,7 +159,7 @@
 
     <div class="profile-container">
       <h2>推しへのメッセージ</h2>
-      <label for="message">推しへの愛など自由に</label>
+      <label for="message">自由に</label>
       <textarea id="message" rows="4" maxlength="148"></textarea>
     </div>
 
@@ -162,7 +168,6 @@
       <p id="status"></p>
     </div>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>
