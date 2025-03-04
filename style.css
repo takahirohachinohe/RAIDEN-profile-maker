@@ -1,8 +1,9 @@
 /************************************************************
- * TEAM RAIDEN 推しプロフ (家族写真対応 + 2ステップシェア)
+ * TEAM RAIDEN 推しプロフィール
+ * 家系図(左上, 太い線4px) + 2ステップシェア
  ************************************************************/
  html, body {
-  margin: 0; 
+  margin: 0;
   padding: 0;
   background: #f9f9f9;
   font-family: "Segoe UI", sans-serif;
@@ -14,7 +15,7 @@ main {
   padding: 0 20px;
 }
 
-/* 枠 */
+/* フォーム・プレビュー共通枠 */
 .profile-container, .preview-container {
   background-color: #fff;
   border: 2px solid #FFD700;
@@ -32,7 +33,6 @@ main {
   font-size: 1.1rem;
 }
 
-/* ラベル + フォーム */
 label {
   display: block;
   font-weight: bold;
@@ -52,7 +52,6 @@ select {
   color: #333;
 }
 
-/* ボタン */
 button {
   background-color: #FFD700;
   color: #000;
@@ -66,42 +65,107 @@ button {
 button:hover {
   background: #ffe75c;
 }
-
 #status {
   margin-top: 10px;
   color: #FFD700;
   font-weight: bold;
 }
 
-/************************************************************
- * 2ページ目(プレビュー): 可変高さ (質問多くても切れない)
- ************************************************************/
+/* 2ページ目プレビュー */
 #previewContainer {
-  width: 1200px; /* 横幅固定 */
+  width: 1200px;
   margin: 0 auto;
   border: 2px dashed #FFD700;
   border-radius: 12px;
   position: relative;
   background: #fff;
   box-sizing: border-box;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
-#profileContent {
+/* 例: 2カラムレイアウト
+   - 左上: 家系図
+   - 右: 性格チャート, ベストメモリーズ, ifトーク, etc
+*/
+#contentRow {
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
 }
-.column {
-  flex: 1 1 50%;
-  min-width: 300px;
-  box-sizing: border-box;
-  padding: 10px;
+
+/* 家系図を左上 (青丸エリア) */
+#familyTreeContainer {
+  width: 500px; /* 適宜調整 */
+  position: relative;
+  margin-right: 20px; /* 隔たり */
 }
 
-/* Chart.js */
+/* 家系図(トーナメント風) */
+.family-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: relative;
+  margin-bottom: 70px; /* 余白 */
+}
+.family-node {
+  text-align: center;
+  position: relative;
+}
+.family-node img {
+  width: 100px; 
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #FFD700; /* 四角の枠はそのまま2px */
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+.family-node p {
+  margin: 0;
+  font-weight: bold;
+  color: #FFD700;
+}
+
+/* 父母の水平線(太く4px) */
+#fatherMotherLine {
+  position: absolute;
+  top: 50px;
+  left: 10%;
+  width: 80%;
+  height: 4px; /* 線を太く */
+  background: #FFD700;
+  z-index: 1;
+}
+/* 縦線 (4px) */
+.connector {
+  position: absolute;
+  width: 4px;  /* 太い線 */
+  background: #FFD700;
+  z-index: 0;
+}
+#connectorFather {
+  top: 100px;
+  left: 25%;
+  height: 80px;
+}
+#connectorMother {
+  top: 100px;
+  left: 75%;
+  height: 80px;
+}
+#connectorPet {
+  top: 220px;
+  left: 50%;
+  height: 80px;
+}
+
+/* 右カラム */
+#rightColumn {
+  flex: 1;
+  position: relative;
+}
+
 .chart-container {
   max-width: 350px;
   margin: 10px auto;
@@ -111,7 +175,7 @@ button:hover {
   box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
 }
 
-/* 通常の写真(推し情報) */
+/* 推し写真(右側に出すなど) */
 img.raiden-photo {
   max-width: 300px;
   border: 2px solid #FFD700;
@@ -120,33 +184,7 @@ img.raiden-photo {
   margin-bottom: 10px;
 }
 
-/************************************************************
- * 家系図エリア (父/母/兄/姉/弟/妹/ペット)
- ************************************************************/
-#familyTree {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-.family-slot {
-  width: 120px;
-  text-align: center;
-}
-.family-slot p {
-  font-weight: bold;
-  margin: 2px 0;
-  color: #FFD700;
-}
-.family-slot img {
-  width: 100px; 
-  height: 100px;
-  object-fit: cover;
-  border: 2px solid #FFD700;
-  border-radius: 8px;
-}
-
-/* ボタン群 */
+/* ボタンエリア */
 .share-buttons {
   text-align: center;
   margin-top: 20px;

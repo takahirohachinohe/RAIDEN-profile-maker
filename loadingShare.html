@@ -31,11 +31,10 @@
           document.getElementById('status').textContent="シェアがキャンセルされました";
         });
       } else {
-        // テキストのみ
-        const text= "TEAM RAIDEN 推しプロフ！(画像は別途アップしてね)";
-        const tweetUrl= "https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+        const text="TEAM RAIDEN 推しプロフ！(画像は別途アップしてね)";
+        const tweetUrl="https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
         window.open(tweetUrl,"_blank");
-        document.getElementById('status').textContent="Web Share非対応のためテキストのみ";
+        document.getElementById('status').textContent="Web Share非対応(テキストのみ)";
       }
     });
 

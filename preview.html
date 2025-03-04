@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>TEAM RAIDEN - プレビュー (家系図写真)</title>
+  <meta charset="UTF-8" />
+  <title>TEAM RAIDEN プレビュー (家系図を左上, 太い線)</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chart.js + DataLabels + html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,32 +11,61 @@
 </head>
 <body>
   <main>
-    <h1>TEAM RAIDEN プレビュー (家系図写真)</h1>
-
+    <h1>TEAM RAIDEN プレビュー</h1>
     <div class="preview-container">
-      <!-- 可変高さ: 全質問が多くても切れない -->
       <div id="previewContainer">
-        <div id="profileContent">
+        <!-- 2カラム: 左=家系図, 右=チャート等 -->
+        <div id="contentRow">
+          <!-- ▼ 家系図 (左カラム, 青丸スペース) ▼ -->
+          <div id="familyTreeContainer">
+            <h2>家族に例えるなら(写真)</h2>
+            <!-- 父母 (上段) -->
+            <div class="family-row">
+              <div class="family-node">
+                <img id="fatherPhoto" src="" alt="父選手">
+                <p>父</p>
+              </div>
+              <div id="fatherMotherLine"></div>
+              <div class="family-node">
+                <img id="motherPhoto" src="" alt="母選手">
+                <p>母</p>
+              </div>
+            </div>
+            <div class="connector" id="connectorFather"></div>
+            <div class="connector" id="connectorMother"></div>
 
-          <!-- 左カラム -->
-          <div class="column">
-            <h2>推し情報</h2>
-            <img id="photoImg" class="raiden-photo" src="" alt="">
-            <p><b>推し選手:</b> <span id="playerSelectDisplay"></span></p>
-            <p><b>呼び方:</b> <span id="nicknameDisplay"></span></p>
-            <p><b>好きなところ:</b> <span id="favoriteThingDisplay"></span></p>
-            <p><b>好きになったきっかけ:</b> <span id="fanReasonDisplay"></span></p>
-            <p><b>ここを知ってほしい:</b> <span id="highlightDisplay"></span></p>
+            <!-- 中段: 兄姉弟妹 -->
+            <div class="family-row">
+              <div class="family-node">
+                <img id="brotherPhoto" src="" alt="兄選手">
+                <p>兄</p>
+              </div>
+              <div class="family-node">
+                <img id="sisterPhoto" src="" alt="姉選手">
+                <p>姉</p>
+              </div>
+              <div class="family-node">
+                <img id="youngerBrotherPhoto" src="" alt="弟選手">
+                <p>弟</p>
+              </div>
+              <div class="family-node">
+                <img id="youngerSisterPhoto" src="" alt="妹選手">
+                <p>妹</p>
+              </div>
+            </div>
+            <div class="connector" id="connectorPet"></div>
 
-            <h2>ifトーク</h2>
-            <p><b>学校の先生:</b> <span id="teacherDisplay"></span></p>
-            <p><b>無人島:</b> <span id="islandDisplay"></span></p>
-            <p><b>上司:</b> <span id="bossDisplay"></span></p>
-            <p><b>後輩:</b> <span id="juniorDisplay"></span></p>
-          </div>
+            <!-- 下段: ペット -->
+            <div class="family-row">
+              <div class="family-node">
+                <img id="petPhoto" src="" alt="ペット">
+                <p>ペット</p>
+              </div>
+            </div>
+          </div><!-- #familyTreeContainer -->
 
-          <!-- 右カラム -->
-          <div class="column">
+          <!-- ▼ 右カラム (チャート, ベストメモリーズ, ifトーク, 推し情報など) ▼ -->
+          <div id="rightColumn">
             <h2>性格チャート</h2>
             <div class="chart-container">
               <canvas id="myChart"></canvas>
@@ -46,43 +75,26 @@
             <p><b>一番の思い出:</b> <span id="memory1Display"></span></p>
             <p><b>輝いた時:</b> <span id="memory2Display"></span></p>
 
-            <h2>家族に例えるなら (写真)</h2>
-            <div id="familyTree">
-              <div class="family-slot">
-                <p>父</p>
-                <img id="fatherPhoto" src="" alt="父選手">
-              </div>
-              <div class="family-slot">
-                <p>母</p>
-                <img id="motherPhoto" src="" alt="母選手">
-              </div>
-              <div class="family-slot">
-                <p>兄</p>
-                <img id="brotherPhoto" src="" alt="兄選手">
-              </div>
-              <div class="family-slot">
-                <p>姉</p>
-                <img id="sisterPhoto" src="" alt="姉選手">
-              </div>
-              <div class="family-slot">
-                <p>弟</p>
-                <img id="youngerBrotherPhoto" src="" alt="弟選手">
-              </div>
-              <div class="family-slot">
-                <p>妹</p>
-                <img id="youngerSisterPhoto" src="" alt="妹選手">
-              </div>
-              <div class="family-slot">
-                <p>ペット</p>
-                <img id="petPhoto" src="" alt="ペット選手">
-              </div>
-            </div>
+            <h2>ifトーク</h2>
+            <p><b>学校の先生:</b> <span id="teacherDisplay"></span></p>
+            <p><b>無人島:</b> <span id="islandDisplay"></span></p>
+            <p><b>上司:</b> <span id="bossDisplay"></span></p>
+            <p><b>後輩:</b> <span id="juniorDisplay"></span></p>
 
-            <h2>推しへのメッセージ</h2>
-            <p id="messageDisplay"></p>
-          </div><!-- .column -->
+            <h2>推し情報</h2>
+            <p><b>推し選手:</b> <span id="playerSelectDisplay"></span></p>
+            <p><b>呼び方:</b> <span id="nicknameDisplay"></span></p>
+            <p><b>好きなところ:</b> <span id="favoriteThingDisplay"></span></p>
+            <p><b>好きになったきっかけ:</b> <span id="fanReasonDisplay"></span></p>
+            <p><b>ここを知って:</b> <span id="highlightDisplay"></span></p>
 
-        </div><!-- #profileContent -->
+            <h2>推し写真</h2>
+            <img id="photoImg" class="raiden-photo" src="" alt="推し写真">
+          </div><!-- #rightColumn -->
+        </div><!-- #contentRow -->
+
+        <h2 style="text-align:center; margin-top:20px;">推しへのメッセージ</h2>
+        <p id="messageDisplay" style="text-align:center;"></p>
       </div><!-- #previewContainer -->
     </div><!-- .preview-container -->
 
@@ -94,14 +106,14 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', async ()=>{
-      /********************************************************
-       * 0) 選手名→写真ファイルのマップ
-       ********************************************************/
+      /*****************************************************
+       * (A) 選手名→写真ファイルマップ
+       *****************************************************/
       const playerPhotoMap = {
-        "萩原聖人" :  "images/hagiwara.jpg",
+        "萩原聖人" : "images/hagiwara.jpg",
         "瀬戸熊直樹": "images/setokuma.jpg",
-        "黒沢咲"  :  "images/kurosawa.jpg",
-        "本田朋広" :  "images/honda.jpg"
+        "黒沢咲"   : "images/kurosawa.jpg",
+        "本田朋広" : "images/honda.jpg"
       };
 
       const dataStr= localStorage.getItem('raidenProfileData');
@@ -111,27 +123,9 @@
       }
       const data= JSON.parse(dataStr);
 
-      // 1) 推し写真
-      const photoImg= document.getElementById('photoImg');
-      if(data.photoDataURL){
-        photoImg.src= data.photoDataURL;
-      }
-
-      // 2) テキスト (推し情報, ifトーク, etc.)
-      id('playerSelectDisplay').textContent   = data.playerSelect||"";
-      id('nicknameDisplay').textContent       = data.nickname||"";
-      id('favoriteThingDisplay').textContent  = data.favoriteThing||"";
-      id('fanReasonDisplay').textContent      = data.fanReason||"";
-      id('highlightDisplay').textContent      = data.highlight||"";
-      id('memory1Display').textContent        = data.memory1||"";
-      id('memory2Display').textContent        = data.memory2||"";
-      id('teacherDisplay').textContent        = data.teacher||"";
-      id('islandDisplay').textContent         = data.island||"";
-      id('bossDisplay').textContent           = data.boss||"";
-      id('juniorDisplay').textContent         = data.junior||"";
-      id('messageDisplay').textContent        = data.message||"";
-
-      // 3) 家族に例えるなら(写真)
+      /*****************************************************
+       * (B) 家系図(左上)
+       *****************************************************/
       setFamilyPhoto("father", data.father);
       setFamilyPhoto("mother", data.mother);
       setFamilyPhoto("brother", data.brother);
@@ -141,25 +135,26 @@
       setFamilyPhoto("pet", data.pet);
 
       function setFamilyPhoto(role, playerName){
-        // 例: fatherPhoto, motherPhoto ...
-        const photoId   = role + "Photo";
-        const photoPath = playerPhotoMap[playerName] || "images/noimage.png";
-        const imgEl     = document.getElementById(photoId);
-        if(imgEl) imgEl.src= photoPath;
+        const photoId= role + "Photo";
+        const path= playerPhotoMap[playerName] || "images/noimage.png";
+        const el= document.getElementById(photoId);
+        if(el) el.src= path;
       }
 
-      // 4) 性格チャート(常時%表示)
-      const c= parseFloat(data.cool)||0, 
+      /*****************************************************
+       * (C) 性格チャート
+       *****************************************************/
+      const c= parseFloat(data.cool)||0,
             cu=parseFloat(data.cute)||0,
-            k= parseFloat(data.kind)||0, 
-            f= parseFloat(data.funny)||0, 
+            k= parseFloat(data.kind)||0,
+            f= parseFloat(data.funny)||0,
             s= parseFloat(data.strong)||0;
       const sum= c+cu+k+f+s;
-      let ratioData=[0,0,0,0,0];
+      let ratioData= [0,0,0,0,0];
       if(sum>0){
         ratioData= [ c/sum, cu/sum, k/sum, f/sum, s/sum ];
       }
-      new Chart(id('myChart').getContext('2d'),{
+      new Chart(document.getElementById('myChart').getContext('2d'), {
         type:'pie',
         data:{
           labels:["クール","かわいい","優しい","面白い","強い"],
@@ -173,41 +168,62 @@
             tooltip:{
               callbacks:{
                 label:(ctx)=>{
-                  const lbl= ctx.label||"";
-                  const val= ctx.parsed*100;
-                  return `${lbl}: ${val.toFixed(0)}%`;
+                  const label= ctx.label||"";
+                  const val= (ctx.parsed*100).toFixed(0);
+                  return `${label}: ${val}%`;
                 }
               }
             },
-            legend:{
-              labels:{ color:"#333", font:{size:14}}
-            },
+            legend:{ labels:{ color:"#333", font:{size:14}}},
             datalabels:{
               color:"#fff",
-              formatter: (value, c)=> (value*100).toFixed(0)+"%"
+              formatter: (value)=> (value*100).toFixed(0)+"%"
             }
           }
         },
         plugins:[ChartDataLabels]
       });
 
+      /*****************************************************
+       * (D) テキスト(ベストメモリーズ, ifトーク, 推し情報, メッセージ)
+       *****************************************************/
+      setText('memory1Display', data.memory1);
+      setText('memory2Display', data.memory2);
+      setText('teacherDisplay', data.teacher);
+      setText('islandDisplay', data.island);
+      setText('bossDisplay', data.boss);
+      setText('juniorDisplay', data.junior);
+
+      setText('playerSelectDisplay', data.playerSelect);
+      setText('nicknameDisplay', data.nickname);
+      setText('favoriteThingDisplay', data.favoriteThing);
+      setText('fanReasonDisplay', data.fanReason);
+      setText('highlightDisplay', data.highlight);
+      setText('messageDisplay', data.message);
+
+      // 推し写真 (右コラム)
+      if(data.photoDataURL){
+        document.getElementById('photoImg').src= data.photoDataURL;
+      }
+
       // ボタン
-      id('editBtn').addEventListener('click',()=>{
+      document.getElementById('editBtn').addEventListener('click',()=>{
         window.location.href="index.html";
       });
-      id('shareStep1Btn').addEventListener('click', async ()=>{
-        // html2canvas
-        const container= id('previewContainer');
+      document.getElementById('shareStep1Btn').addEventListener('click', async ()=>{
+        const container= document.getElementById('previewContainer');
         const canvas= await html2canvas(container,{
           windowWidth: document.body.scrollWidth,
           windowHeight: document.body.scrollHeight
         });
         const dataUrl= canvas.toDataURL("image/png");
         localStorage.setItem('shareImage', dataUrl);
-        window.location.href= "loadingShare.html";
+        window.location.href="loadingShare.html";
       });
 
-      function id(x){ return document.getElementById(x); }
+      function setText(id, val){
+        document.getElementById(id).textContent= val||"";
+      }
     });
   </script>
 </body>
