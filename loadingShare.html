@@ -3,10 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>TEAM RAIDEN - シェア画面(2回目)</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0; padding: 0;
+      font-family: sans-serif;
+      text-align: center;
+      background: #fdfdfd;
+    }
+    main {
+      margin: 40px auto;
+      max-width: 600px;
+    }
+    #status {
+      margin-top: 20px;
+      color: #f00;
+      font-weight: bold;
+    }
+    button {
+      background: #FFC200;
+      border: none;
+      border-radius: 20px;
+      padding: 12px 30px;
+      font-weight: bold;
+      color: #000;
+      margin: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #ffe366;
+    }
+  </style>
 </head>
 <body>
-  <main style="text-align:center;">
+  <main>
     <h1>画像をシェア</h1>
     <p>画像の準備ができました。<br>もう一度ボタンを押すとXでシェアします。</p>
     <button id="shareFinalBtn">Xでシェア</button>
@@ -14,39 +44,44 @@
   </main>
   <script>
     document.getElementById('shareFinalBtn').addEventListener('click',()=>{
-      const dataUrl= localStorage.getItem('shareImage');
+      // ローカルストレージから画像データを取得
+      const dataUrl = localStorage.getItem('shareImage');
       if(!dataUrl){
-        document.getElementById('status').textContent="画像がありません";
+        document.getElementById('status').textContent = "画像がありません";
         return;
       }
-      const blob= dataURLtoBlob(dataUrl);
-      const file= new File([blob],"raiden-profile.png",{type:"image/png"});
-      if(navigator.canShare && navigator.canShare({files:[file]})){
+      // dataURL → Blob変換
+      const blob = dataURLtoBlob(dataUrl);
+      const file = new File([blob],"raiden-profile.png",{ type:"image/png" });
+
+      // Web Share API(ファイル対応)判定
+      if(navigator.canShare && navigator.canShare({ files:[file] })){
         navigator.share({
-          text:"TEAM RAIDEN 推しプロフ！",
-          files:[file]
+          text: "TEAM RAIDEN 推しプロフ！",
+          files: [file]
         }).catch(err=>{
-          console.warn("シェア失敗 or キャンセル", err);
+          console.warn("シェア失敗orキャンセル:", err);
           document.getElementById('status').textContent="シェアがキャンセルされました。";
         });
       } else {
-        // テキストのみ
-        const text= "TEAM RAIDEN 推しプロフ！(画像は別途)";
-        const tweetUrl= "https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+        // 非対応時はテキストTweetのみ
+        const text = "TEAM RAIDEN 推しプロフ！(画像は別途)";
+        const tweetUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
         window.open(tweetUrl,"_blank");
-        document.getElementById('status').textContent="Web Share非対応のためテキストのみ";
+        document.getElementById('status').textContent = "Web Share非対応のためテキストのみ";
       }
     });
+
     function dataURLtoBlob(dataurl){
-      const arr= dataurl.split(',');
-      const mime= arr[0].match(/:(.*?);/)[1];
-      const bstr= atob(arr[1]);
-      let n= bstr.length;
-      const u8arr= new Uint8Array(n);
-      for(let i=0;i<n;i++){
-        u8arr[i]= bstr.charCodeAt(i);
+      const arr = dataurl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      for(let i=0; i<n; i++){
+        u8arr[i] = bstr.charCodeAt(i);
       }
-      return new Blob([u8arr],{type:mime});
+      return new Blob([u8arr],{type: mime});
     }
   </script>
 </body>
