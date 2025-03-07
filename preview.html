@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>TEAM RAIDEN 推しプロフィール</title>
-  
   <!-- Chart.js + DataLabels + html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -27,7 +26,6 @@
       position: relative;
       overflow: hidden;
     }
-    /* タイトルから「- プレビュー」を除外 */
     h1 {
       text-align: center;
       margin: 10px 0 20px;
@@ -216,7 +214,7 @@
       width: 4px; height: 120px;
     }
 
-    /* ボタン */
+    /* ボタン（大きめ） */
     .share-buttons {
       text-align: center;
       margin-top: 20px;
@@ -240,7 +238,6 @@
 </head>
 <body>
   <main>
-    <!-- タイトルは「TEAM RAIDEN 推しプロフィール」だけに -->
     <h1>TEAM RAIDEN 推しプロフィール</h1>
 
     <div class="preview-container">
@@ -348,22 +345,22 @@
 
       // 画像(推し選手)
       if(data.photoDataURL){
-        id('photoImg').src = data.photoDataURL;
+        document.getElementById('photoImg').src = data.photoDataURL;
       }
 
       // テキスト(推し情報など)
-      id('playerDisplay').textContent    = data.playerSelect    || "";
-      id('nicknameDisplay').textContent  = data.nickname        || "";
-      id('favoriteThingDisplay').textContent = data.favoriteThing || "";
-      id('fanReasonDisplay').textContent = data.fanReason       || "";
-      id('highlightDisplay').textContent = data.highlight       || "";
-      id('memory1Display').textContent   = data.memory1         || "";
-      id('memory2Display').textContent   = data.memory2         || "";
-      id('teacherDisplay').textContent   = data.teacher         || "";
-      id('islandDisplay').textContent    = data.island          || "";
-      id('bossDisplay').textContent      = data.boss            || "";
-      id('juniorDisplay').textContent    = data.junior          || "";
-      id('messageDisplay').textContent   = data.message         || "";
+      document.getElementById('playerDisplay').textContent    = data.playerSelect    || "";
+      document.getElementById('nicknameDisplay').textContent  = data.nickname        || "";
+      document.getElementById('favoriteThingDisplay').textContent = data.favoriteThing || "";
+      document.getElementById('fanReasonDisplay').textContent = data.fanReason       || "";
+      document.getElementById('highlightDisplay').textContent = data.highlight       || "";
+      document.getElementById('memory1Display').textContent   = data.memory1         || "";
+      document.getElementById('memory2Display').textContent   = data.memory2         || "";
+      document.getElementById('teacherDisplay').textContent   = data.teacher         || "";
+      document.getElementById('islandDisplay').textContent    = data.island          || "";
+      document.getElementById('bossDisplay').textContent      = data.boss            || "";
+      document.getElementById('juniorDisplay').textContent    = data.junior          || "";
+      document.getElementById('messageDisplay').textContent   = data.message         || "";
 
       // 家系図 (選手名 → 写真)
       const photoMap = {
@@ -376,47 +373,58 @@
       function getImg(name){
         return photoMap[name] || noImg;
       }
-      id('fatherLabel').textContent   = data.father         || "";
-      id('fatherPhoto').src          = getImg(data.father);
-      id('motherLabel').textContent  = data.mother         || "";
-      id('motherPhoto').src          = getImg(data.mother);
-      id('brotherLabel').textContent = data.brother        || "";
-      id('brotherPhoto').src         = getImg(data.brother);
-      id('sisterLabel').textContent  = data.sister         || "";
-      id('sisterPhoto').src          = getImg(data.sister);
-      id('yBrotherLabel').textContent= data.youngerBrother || "";
-      id('yBrotherPhoto').src        = getImg(data.youngerBrother);
-      id('ySisterLabel').textContent = data.youngerSister  || "";
-      id('ySisterPhoto').src         = getImg(data.youngerSister);
-      id('petLabel').textContent     = data.pet            || "";
-      id('petPhoto').src             = getImg(data.pet);
+      document.getElementById('fatherLabel').textContent   = data.father || "";
+      document.getElementById('fatherPhoto').src          = getImg(data.father);
+      document.getElementById('motherLabel').textContent  = data.mother || "";
+      document.getElementById('motherPhoto').src          = getImg(data.mother);
+      document.getElementById('brotherLabel').textContent = data.brother || "";
+      document.getElementById('brotherPhoto').src         = getImg(data.brother);
+      document.getElementById('sisterLabel').textContent  = data.sister || "";
+      document.getElementById('sisterPhoto').src          = getImg(data.sister);
+      document.getElementById('yBrotherLabel').textContent= data.youngerBrother || "";
+      document.getElementById('yBrotherPhoto').src        = getImg(data.youngerBrother);
+      document.getElementById('ySisterLabel').textContent = data.youngerSister || "";
+      document.getElementById('ySisterPhoto').src         = getImg(data.youngerSister);
+      document.getElementById('petLabel').textContent     = data.pet || "";
+      document.getElementById('petPhoto').src             = getImg(data.pet);
 
-      // 性格チャートの色分けを、はっきりした色に変更
-      const chartColors = [
-        "#e41a1c", /* 赤 */
-        "#377eb8", /* 青 */
-        "#4daf4a", /* 緑 */
-        "#984ea3", /* 紫 */
-        "#ff7f00"  /* オレンジ */
-      ];
-      const c  = parseFloat(data.cool)   || 0,
-            cu = parseFloat(data.cute)   || 0,
-            k  = parseFloat(data.kind)   || 0,
-            f  = parseFloat(data.funny)  || 0,
-            s  = parseFloat(data.strong) || 0;
+      /* クール=あお, かわいい=ピンク, 優しい=みどり, 面白い=きいろ, 強い=あか */
+      const colorMap = {
+        cool:   "#377eb8", /* 青 */
+        cute:   "#ff69b4", /* ピンク */
+        kind:   "#4daf4a", /* 緑 */
+        funny:  "#ffeb3b", /* 黄色 (やや明るい) */
+        strong: "#e41a1c"  /* 赤 */
+      };
+
+      const c  = parseFloat(data.cool)   || 0, // クール(青)
+            cu = parseFloat(data.cute)   || 0, // かわいい(ピンク)
+            k  = parseFloat(data.kind)   || 0, // 優しい(緑)
+            f  = parseFloat(data.funny)  || 0, // 面白い(黄)
+            s  = parseFloat(data.strong) || 0; // 強い(赤)
+
       const sum = c + cu + k + f + s;
       let ratioData = [0, 0, 0, 0, 0];
       if(sum > 0){
         ratioData = [ c/sum, cu/sum, k/sum, f/sum, s/sum ];
       }
 
-      new Chart(id('myChart').getContext('2d'), {
+      // labelsの順番 ["クール","かわいい","優しい","面白い","強い"] に合わせる
+      const backgroundColors = [
+        colorMap.cool,   // クール
+        colorMap.cute,   // かわいい
+        colorMap.kind,   // 優しい
+        colorMap.funny,  // 面白い
+        colorMap.strong  // 強い
+      ];
+
+      new Chart(document.getElementById('myChart').getContext('2d'), {
         type: 'pie',
         data: {
           labels: ["クール","かわいい","優しい","面白い","強い"],
           datasets: [{
             data: ratioData,
-            backgroundColor: chartColors
+            backgroundColor: backgroundColors
           }]
         },
         options: {
@@ -437,7 +445,7 @@
               }
             },
             datalabels: {
-              color: "#fff", /* グラフ上の数値表示は白字に */
+              color: "#fff", /* 円グラフ上の数字は白文字に */
               formatter: (value) => (value * 100).toFixed(0) + "%"
             }
           }
@@ -445,19 +453,17 @@
         plugins: [ChartDataLabels]
       });
 
-      // ボタン
-      id('editBtn').addEventListener('click', () => {
+      // ボタンイベント
+      document.getElementById('editBtn').addEventListener('click', () => {
         window.location.href = "index.html";
       });
-      id('shareStep1Btn').addEventListener('click', async () => {
-        const container = id('previewContainer');
+      document.getElementById('shareStep1Btn').addEventListener('click', async () => {
+        const container = document.getElementById('previewContainer');
         const canvas = await html2canvas(container);
         const dataUrl = canvas.toDataURL("image/png");
         localStorage.setItem('shareImage', dataUrl);
         window.location.href = "loadingShare.html";
       });
-
-      function id(x){ return document.getElementById(x); }
     });
   </script>
 </body>
