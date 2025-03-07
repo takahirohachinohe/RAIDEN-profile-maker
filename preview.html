@@ -2,26 +2,23 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>TEAM RAIDEN 推しプロフ - プレビュー</title>
+  <title>TEAM RAIDEN 推しプロフィール</title>
+  
   <!-- Chart.js + DataLabels + html2canvas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas"></script>
 
   <style>
-    /* ========== 全体の背景やフォント ========== */
-    html, body {
-      margin: 0; 
-      padding: 0;
-      background: linear-gradient(180deg, #111 10%, #FFC200 200%); 
+    /* 背景を黒～金系のグラデーションに */
+    body {
+      margin: 0; padding: 0;
+      background: linear-gradient(180deg, #111 10%, #FFC200 200%);
       font-family: "Segoe UI", sans-serif;
       color: #333;
     }
-    body {
-      /* 黒～金の背景グラデーション */
-    }
     main {
-      width: 800px; /* 以前のレイアウト幅に戻す */
+      width: 800px; /* X共有しやすいよう適度に幅を狭める */
       margin: 30px auto;
       background: #fff;
       border-radius: 20px;
@@ -29,37 +26,18 @@
       padding: 20px 30px;
       position: relative;
       overflow: hidden;
-      box-sizing: border-box;
     }
+    /* タイトルから「- プレビュー」を除外 */
     h1 {
       text-align: center;
       margin: 10px 0 20px;
-      color: #FFC200;
+      color: #FFC200; /* 金色 */
       font-weight: bold;
       font-size: 1.8rem;
       text-shadow: 1px 1px 2px #333;
     }
 
-    /* ========== プレビュー外枠 ========== */
-    .preview-container {
-      background: #fff;
-      border: 3px dashed #FFC200;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-      position: relative;
-    }
-    #previewContainer {
-      background: #fff;
-      border: 2px dashed #FFDD58; 
-      border-radius: 16px;
-      padding: 20px;
-      margin: 0 auto;
-      position: relative;
-      box-sizing: border-box;
-    }
-
-    /* ========== セクション見出し(吹き出し風) ========== */
+    /* ポップな吹き出し風タイトルデザイン */
     h2 {
       display: inline-block;
       background: #FFC200;
@@ -82,14 +60,34 @@
       border-top-color: #FFC200; 
     }
 
-    /* ========== 上段レイアウト ========== */
+    /* プレビューボックスの大枠デザイン */
+    .preview-container {
+      background: #fff;
+      border: 3px dashed #FFC200;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    /* 内側のコンテンツ用 */
+    #previewContainer {
+      background: #fff;
+      border: 2px dashed #FFDD58; 
+      border-radius: 16px;
+      padding: 20px;
+      margin: 0 auto;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    /* 左右に振り分ける部分 */
     #profileHeader {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap; /* 画面が狭いとき折り返し */
       gap: 20px;
     }
     .left-box, .right-box {
-      flex: 1 1 300px;
+      flex: 1 1 300px; /* 最低幅確保しつつ伸縮 */
       min-width: 260px;
       background: #FFFDE7;
       border-radius: 12px;
@@ -97,6 +95,11 @@
       box-shadow: inset 1px 1px 5px rgba(0,0,0,0.1);
       position: relative;
     }
+    .left-box h2,
+    .right-box h2 {
+      margin-top: 0.2em; 
+    }
+    /* 推し写真 */
     #photoImg {
       display: block;
       max-width: 180px;
@@ -116,13 +119,15 @@
       color: #000;
       font-weight: bold;
     }
+
+    /* chart, ifトーク, メッセージ まとめた右ボックス内 */
     .chart-container {
       width: 100%;
       max-width: 280px;
       margin: 0 auto 10px;
     }
 
-    /* ========== 家系図 (位置/線) ========== */
+    /* 家系図 */
     h2.family-title {
       text-align:center;
       margin-top: 40px;
@@ -131,7 +136,7 @@
       position: relative;
       width: 100%;
       max-width: 600px;
-      height: 460px;
+      height: 460px; /* ちょっと小さめに */
       margin: 20px auto;
       background: #FFFDE7;
       border: 2px dashed #FFC200;
@@ -148,7 +153,7 @@
       border-radius: 8px;
       overflow: hidden;
       background: #fff;
-      z-index: 1;
+      z-index: 1; /* 線より前面に */
     }
     .family-node .family-img {
       width: 100%;
@@ -163,14 +168,16 @@
       color: #333;
       font-weight: bold;
     }
-    /* 位置ずらす */
+    /* 位置調整(線と被らないよう少しズラす) */
     #fatherNode { left: 60px; top: 20px; }
     #motherNode { left: 360px; top: 20px; }
     #brotherNode { left: 10px; top: 220px; }
-    #sisterNode  { left: 130px; top: 220px; }
-    #yBrotherNode{ left: 250px; top: 220px; }
+    #sisterNode { left: 130px; top: 220px; }
+    #yBrotherNode { left: 250px; top: 220px; }
     #ySisterNode { left: 370px; top: 220px; }
-    #petNode     { left: 200px; top: 340px; }
+    #petNode { left: 200px; top: 340px; }
+
+    /* 線: z-index:0 で写真と重ならない */
     .tree-line {
       position: absolute;
       background: #FFC200;
@@ -182,7 +189,7 @@
     }
     #lineDownFromParents {
       left: 250px; top: 50px;
-      width: 4px; height: 80px;
+      width: 4px; height: 60px;
     }
     #lineChildren {
       left: 10px; top: 110px;
@@ -209,37 +216,38 @@
       width: 4px; height: 120px;
     }
 
-    /* ========== 下２つのボタンを大きく ========== */
+    /* ボタン */
     .share-buttons {
-      text-align:center;
-      margin-top:20px;
+      text-align: center;
+      margin-top: 20px;
     }
     .share-buttons button {
-      background-color:#FFC200;
-      border:none;
-      border-radius:30px;
-      color:#000;
-      font-weight:bold;
-      font-size:1.2rem;   /* 文字大きめ */
-      padding:14px 40px;  /* ボタン自体大きめ */
-      margin:0 10px;
-      cursor:pointer;
-      transition:background 0.2s;
+      background-color: #FFC200;
+      border: none;
+      border-radius: 30px;   /* 角を丸く */
+      color: #000;
+      font-weight: bold;
+      font-size: 1.2rem;     /* 文字大きめ */
+      padding: 14px 40px;    /* ボタンを大きく */
+      cursor: pointer;
+      transition: background 0.2s;
+      margin: 0 10px;
     }
     .share-buttons button:hover {
-      background:#ffdb4b;
+      background: #ffdb4b;
     }
-
   </style>
 </head>
 <body>
   <main>
-    <h1>TEAM RAIDEN 推しプロフィール - プレビュー</h1>
+    <!-- タイトルは「TEAM RAIDEN 推しプロフィール」だけに -->
+    <h1>TEAM RAIDEN 推しプロフィール</h1>
 
     <div class="preview-container">
       <div id="previewContainer">
-        <!-- ▼ 上段: 推し情報 + 性格チャート -->
+        <!-- ▼ 上段: 推し情報 + 性格チャート/etc. -->
         <div id="profileHeader">
+          <!-- 左カラム -->
           <div class="left-box">
             <h2>推し情報</h2>
             <img id="photoImg" src="" alt="推し写真">
@@ -254,6 +262,7 @@
             <p><b>輝いた時:</b> <span id="memory2Display"></span></p>
           </div>
 
+          <!-- 右カラム -->
           <div class="right-box">
             <h2>性格チャート</h2>
             <div class="chart-container">
@@ -270,33 +279,40 @@
           </div>
         </div><!-- /#profileHeader -->
 
-        <!-- ▼ 家系図 -->
+        <!-- ▼ 家系図 (トーナメント表風) -->
         <h2 class="family-title">家族に例えるなら (トーナメント家系図)</h2>
         <div id="familyTreeWrapper">
+          <!-- 父 -->
           <div class="family-node" id="fatherNode">
             <img id="fatherPhoto" class="family-img" alt="父">
             <div class="label" id="fatherLabel"></div>
           </div>
+          <!-- 母 -->
           <div class="family-node" id="motherNode">
             <img id="motherPhoto" class="family-img" alt="母">
             <div class="label" id="motherLabel"></div>
           </div>
+          <!-- 兄 -->
           <div class="family-node" id="brotherNode">
             <img id="brotherPhoto" class="family-img" alt="兄">
             <div class="label" id="brotherLabel"></div>
           </div>
+          <!-- 姉 -->
           <div class="family-node" id="sisterNode">
             <img id="sisterPhoto" class="family-img" alt="姉">
             <div class="label" id="sisterLabel"></div>
           </div>
+          <!-- 弟 -->
           <div class="family-node" id="yBrotherNode">
             <img id="yBrotherPhoto" class="family-img" alt="弟">
             <div class="label" id="yBrotherLabel"></div>
           </div>
+          <!-- 妹 -->
           <div class="family-node" id="ySisterNode">
             <img id="ySisterPhoto" class="family-img" alt="妹">
             <div class="label" id="ySisterLabel"></div>
           </div>
+          <!-- ペット -->
           <div class="family-node" id="petNode">
             <img id="petPhoto" class="family-img" alt="ペット">
             <div class="label" id="petLabel"></div>
@@ -349,7 +365,7 @@
       id('juniorDisplay').textContent    = data.junior          || "";
       id('messageDisplay').textContent   = data.message         || "";
 
-      // 家系図 (選手名→写真)
+      // 家系図 (選手名 → 写真)
       const photoMap = {
         "萩原聖人"   : "images/hagiwara.jpg",
         "瀬戸熊直樹" : "images/setokuma.jpg",
@@ -358,25 +374,31 @@
       };
       const noImg = "images/noimage.png";
       function getImg(name){
-        if(photoMap[name]) return photoMap[name];
-        return noImg;
+        return photoMap[name] || noImg;
       }
-      id('fatherLabel').textContent = data.father || "";
-      id('fatherPhoto').src = getImg(data.father);
-      id('motherLabel').textContent = data.mother || "";
-      id('motherPhoto').src = getImg(data.mother);
-      id('brotherLabel').textContent = data.brother || "";
-      id('brotherPhoto').src = getImg(data.brother);
-      id('sisterLabel').textContent = data.sister || "";
-      id('sisterPhoto').src = getImg(data.sister);
-      id('yBrotherLabel').textContent = data.youngerBrother || "";
-      id('yBrotherPhoto').src = getImg(data.youngerBrother);
-      id('ySisterLabel').textContent = data.youngerSister || "";
-      id('ySisterPhoto').src = getImg(data.youngerSister);
-      id('petLabel').textContent = data.pet || "";
-      id('petPhoto').src = getImg(data.pet);
+      id('fatherLabel').textContent   = data.father         || "";
+      id('fatherPhoto').src          = getImg(data.father);
+      id('motherLabel').textContent  = data.mother         || "";
+      id('motherPhoto').src          = getImg(data.mother);
+      id('brotherLabel').textContent = data.brother        || "";
+      id('brotherPhoto').src         = getImg(data.brother);
+      id('sisterLabel').textContent  = data.sister         || "";
+      id('sisterPhoto').src          = getImg(data.sister);
+      id('yBrotherLabel').textContent= data.youngerBrother || "";
+      id('yBrotherPhoto').src        = getImg(data.youngerBrother);
+      id('ySisterLabel').textContent = data.youngerSister  || "";
+      id('ySisterPhoto').src         = getImg(data.youngerSister);
+      id('petLabel').textContent     = data.pet            || "";
+      id('petPhoto').src             = getImg(data.pet);
 
-      // 性格チャート
+      // 性格チャートの色分けを、はっきりした色に変更
+      const chartColors = [
+        "#e41a1c", /* 赤 */
+        "#377eb8", /* 青 */
+        "#4daf4a", /* 緑 */
+        "#984ea3", /* 紫 */
+        "#ff7f00"  /* オレンジ */
+      ];
       const c  = parseFloat(data.cool)   || 0,
             cu = parseFloat(data.cute)   || 0,
             k  = parseFloat(data.kind)   || 0,
@@ -394,9 +416,7 @@
           labels: ["クール","かわいい","優しい","面白い","強い"],
           datasets: [{
             data: ratioData,
-            backgroundColor: [
-              "#FFC200","#ffec8c","#fff3c9","#ffe680","#fff9dc"
-            ]
+            backgroundColor: chartColors
           }]
         },
         options: {
@@ -413,11 +433,11 @@
             legend: {
               labels: {
                 color: "#333",
-                font: { size: 12 }
+                font: { size: 14 }
               }
             },
             datalabels: {
-              color: "#000",
+              color: "#fff", /* グラフ上の数値表示は白字に */
               formatter: (value) => (value * 100).toFixed(0) + "%"
             }
           }
